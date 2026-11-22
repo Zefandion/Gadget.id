@@ -269,11 +269,25 @@
     }
 
     @media (max-width: 900px) {
+      .profile-page-wrap {
+        padding: 2rem 1.2rem;
+      }
       .profile-layout-grid {
         grid-template-columns: 1fr;
+        gap: 1.8rem;
+      }
+      .profile-layout-grid > * {
+        min-width: 0;
+        max-width: 100%;
       }
       .profile-sidebar-card {
         position: static;
+        min-width: 0;
+        padding: 1.8rem 1.5rem;
+      }
+      .profile-content-panel {
+        min-width: 0;
+        padding: 2rem 1.6rem;
       }
       .profile-info-grid {
         grid-template-columns: 1fr;
@@ -281,38 +295,163 @@
     }
     @media (max-width: 600px) {
       .profile-page-wrap {
-        padding: 1.5rem 1rem;
+        padding: 1.2rem 0.8rem;
+      }
+      .profile-sidebar-card {
+        padding: 1.2rem 1rem;
+        border-radius: 18px;
+        min-width: 0;
+      }
+      .profile-avatar-wrap {
+        width: 76px;
+        height: 76px;
+        margin-bottom: 0.8rem;
+      }
+      .profile-user-name {
+        font-size: 1.15rem;
+      }
+      .profile-user-email {
+        font-size: 0.8rem;
+      }
+      .profile-tier-badge {
+        font-size: 0.7rem;
+        padding: 3px 12px;
+        margin-bottom: 1.2rem;
       }
       .profile-nav-list {
         display: flex;
         flex-direction: row;
         overflow-x: auto;
         gap: 6px;
-        padding-bottom: 6px;
+        padding-bottom: 8px;
+        margin: 0 -0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
         -webkit-overflow-scrolling: touch;
+        min-width: 0;
+        width: calc(100% + 1rem);
       }
       .profile-nav-list::-webkit-scrollbar {
         display: none;
       }
+      .profile-nav-list li {
+        flex-shrink: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+      }
       .p-nav-btn {
         white-space: nowrap;
-        padding: 8px 12px;
+        padding: 8px 14px;
         font-size: 0.82rem;
+        border: 1px solid var(--gray-200);
+        border-radius: 50px;
+        background: var(--gray-50);
+        width: auto;
       }
-      .profile-stats-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
+      .p-nav-btn.active {
+        background: var(--red-pale);
+        border-color: var(--red);
+        color: var(--red);
       }
-      .profile-stat-card {
-        padding: 1rem 0.8rem;
+      .profile-content-panel {
+        padding: 1.2rem 1rem;
+        border-radius: 18px;
+        min-width: 0;
       }
-      .profile-content-card {
-        padding: 1.2rem;
-      }
-      .order-item-row {
+      .panel-heading-row {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 1.4rem;
+        padding-bottom: 1rem;
+      }
+      .panel-heading-row h2 {
+        font-size: 1.3rem;
+      }
+      .stats-widget-grid {
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
+        margin-bottom: 1.5rem;
+      }
+      .stat-widget-box {
+        padding: 0.9rem 0.75rem;
+        gap: 8px;
+        border-radius: 12px;
+        min-width: 0;
+      }
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        flex-shrink: 0;
+      }
+      .stat-val {
+        font-size: 1.1rem;
+      }
+      .stat-lbl {
+        font-size: 0.7rem;
+      }
+      .profile-info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+      }
+      .info-card-item {
+        padding: 0.9rem;
+        word-break: break-word;
+        border-radius: 12px;
+      }
+      .info-card-val {
+        font-size: 0.92rem;
+        word-break: break-word;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+      .btn-submit-auth {
+        width: 100% !important;
+        max-width: 100% !important;
+        justify-content: center;
+        text-align: center;
+        padding: 12px;
+        font-size: 0.92rem;
+      }
+      .order-card-box {
+        border-radius: 14px;
+        margin-bottom: 1rem;
+      }
+      .order-card-header {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .order-card-body {
+        padding: 0.9rem 1rem;
+      }
+      .order-item-line {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .order-card-footer {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .order-card-footer > div {
+        text-align: left;
+        width: 100%;
+      }
+      .avatar-presets-row {
+        gap: 8px;
+      }
+      .preset-avatar-option {
+        width: 44px;
+        height: 44px;
       }
     }
   </style>
