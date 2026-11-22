@@ -620,6 +620,9 @@ function renderNavbar(activePage = '') {
     '  </div>',
     '',
     '  <div class="nav-actions">',
+    '    <!-- MOBILE SEARCH BUTTON (MOBILE ONLY) -->',
+    '    <button type="button" class="nav-mobile-search-btn" onclick="openSearchModal()" title="Cari Gadget" aria-label="Cari Produk">🔍</button>',
+    '',
     user ? [
       '    <!-- WISHLIST BUTTON (SOLE CONTROLLER) -->',
       '    <a href="wishlist.html" class="nav-icon-btn ' + (activePage === 'wishlist' ? 'active' : '') + '" title="Wishlist Favorit">',
@@ -635,10 +638,10 @@ function renderNavbar(activePage = '') {
       '    </a>',
       '',
       '    <!-- USER PROFILE DROPDOWN -->',
-      '    <div class="nav-user-dropdown-wrap">',
+      '    <div class="nav-user-dropdown-wrap hide-mobile">',
       '      <button class="nav-user-btn" onclick="toggleUserMenu(event)" title="Menu Pengguna">',
       '        <img src="' + ((user && user.avatar) || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop') + '" alt="Avatar" class="nav-avatar">',
-      '        <span class="user-name-label hide-mobile">' + ((user && user.name.split(' ')[0]) || 'Profil') + '</span>',
+      '        <span class="user-name-label">' + ((user && user.name.split(' ')[0]) || 'Profil') + '</span>',
       '        <span class="dropdown-caret">▾</span>',
       '      </button>',
       '      <div class="user-dropdown-menu" id="userDropdownMenu">',
@@ -657,14 +660,108 @@ function renderNavbar(activePage = '') {
       '      </div>',
       '    </div>'
     ].join('\n') : [
-      '    <!-- GUEST AUTH BUTTONS -->',
-      '    <div class="auth-btns">',
+      '    <!-- GUEST CART BUTTON -->',
+      '    <a href="cart.html" class="nav-cart-btn ' + (activePage === 'cart' ? 'active' : '') + '" title="Keranjang Belanja">',
+      '      <span class="icon">🛒</span>',
+      '      <span class="hide-mobile">Keranjang</span>',
+      '      <span class="cart-count-pill" id="navCartBadge">' + cartCount + '</span>',
+      '    </a>',
+      '',
+      '    <!-- GUEST AUTH BUTTONS (DESKTOP) -->',
+      '    <div class="auth-btns hide-mobile">',
       '      <a href="login.html" class="btn-nav-login ' + (activePage === 'login' ? 'active' : '') + '" title="Masuk ke Akun (Sign In)">Sign In</a>',
       '      <a href="register.html" class="btn-nav-signup ' + (activePage === 'register' ? 'active' : '') + '" title="Daftar Akun Baru (Sign Up)">Sign Up</a>',
       '    </div>'
     ].join('\n'),
+    '',
+    '    <!-- HAMBURGER BUTTON (MOBILE ONLY) -->',
+    '    <button type="button" class="nav-hamburger-btn" id="navHamburgerBtn" onclick="toggleMobileNav(event)" aria-label="Buka Menu" title="Menu Navigasi">',
+    '      <span class="hamburger-line"></span>',
+    '      <span class="hamburger-line"></span>',
+    '      <span class="hamburger-line"></span>',
+    '    </button>',
     '  </div>',
     '</nav>',
+    '',
+    '<!-- MOBILE NAVIGATION DRAWER & BACKDROP -->',
+    '<div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>',
+    '<aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Menu Mobile">',
+    '  <div class="mobile-drawer-header">',
+    '    <a href="' + (user ? 'home.html' : 'index.html') + '" class="mobile-drawer-brand" onclick="closeMobileNav()">',
+    '      <span class="brand-text">Gadget<span>.Id</span></span>',
+    '    </a>',
+    '    <button type="button" class="mobile-drawer-close" onclick="closeMobileNav()" aria-label="Tutup Menu">✕</button>',
+    '  </div>',
+    '',
+    user ? [
+      '  <div class="mobile-drawer-user">',
+      '    <img src="' + ((user && user.avatar) || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop') + '" alt="Avatar" class="mobile-user-avatar">',
+      '    <div class="mobile-user-info">',
+      '      <div class="mobile-user-name">' + ((user && user.name) || 'Pengguna') + '</div>',
+      '      <div class="mobile-user-email">' + ((user && user.email) || 'user@gadget.id') + '</div>',
+      '      <span class="mobile-user-badge">' + ((user && user.memberTier) || 'VIP Gold Member') + '</span>',
+      '    </div>',
+      '  </div>'
+    ].join('\n') : [
+      '  <div class="mobile-drawer-guest">',
+      '    <p class="mobile-guest-text">Nikmati kemudahan belanja gadget terbaik & bergaransi resmi.</p>',
+      '    <div class="mobile-guest-btns">',
+      '      <a href="login.html" class="btn-drawer-login" onclick="closeMobileNav()">Sign In (Masuk)</a>',
+      '      <a href="register.html" class="btn-drawer-signup" onclick="closeMobileNav()">Sign Up (Daftar)</a>',
+      '    </div>',
+      '  </div>'
+    ].join('\n'),
+    '',
+    '  <div class="mobile-drawer-body">',
+    '    <div class="mobile-drawer-section-title">Navigasi Halaman</div>',
+    '    <ul class="mobile-drawer-nav">',
+    user ? [
+      '      <li><a href="home.html" class="mobile-nav-item ' + (activePage === 'home' ? 'active' : '') + '" onclick="closeMobileNav()"><span class="nav-item-icon">🏠</span> Halaman Utama</a></li>',
+      '      <li><a href="home.html#categories" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">📱</span> Kategori Produk</a></li>',
+      '      <li><a href="home.html#productsSection" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">🛍️</span> Katalog Semua Gadget</a></li>'
+    ].join('\n') : [
+      '      <li><a href="index.html" class="mobile-nav-item ' + (activePage === 'welcome' ? 'active' : '') + '" onclick="closeMobileNav()"><span class="nav-item-icon">✨</span> Halaman Pembuka</a></li>',
+      '      <li><a href="index.html#flashsale" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">⚡</span> Flash Sale Hari Ini</a></li>',
+      '      <li><a href="index.html#pillars" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">🛡️</span> Keunggulan Resmi</a></li>',
+      '      <li><a href="index.html#testimonials" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">⭐</span> Ulasan Pembeli</a></li>',
+      '      <li><a href="home.html" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">🛍️</span> Lihat Katalog Toko</a></li>'
+    ].join('\n'),
+    '    </ul>',
+    '',
+    '    <div class="mobile-drawer-section-title">Fitur & Aktivitas</div>',
+    '    <ul class="mobile-drawer-nav">',
+    '      <li>',
+    '        <a href="cart.html" class="mobile-nav-item ' + (activePage === 'cart' ? 'active' : '') + '" onclick="closeMobileNav()">',
+    '          <span class="nav-item-icon">🛒</span> Keranjang Belanja',
+    '          <span class="drawer-badge" id="drawerCartBadge">' + cartCount + '</span>',
+    '        </a>',
+    '      </li>',
+    '      <li>',
+    '        <a href="wishlist.html" class="mobile-nav-item ' + (activePage === 'wishlist' ? 'active' : '') + '" onclick="closeMobileNav()">',
+    '          <span class="nav-item-icon">❤️</span> Wishlist Favorit',
+    '          <span class="drawer-badge" id="drawerWishlistBadge">' + wishlistCount + '</span>',
+    '        </a>',
+    '      </li>',
+    '      <li>',
+    '        <a href="cs.html" class="mobile-nav-item ' + (activePage === 'cs' ? 'active' : '') + '" onclick="closeMobileNav()">',
+    '          <span class="nav-item-icon">💬</span> Tanya CS &amp; Live Chat',
+    '          <span class="drawer-status-pill"><span class="cs-pulse-dot"></span>Online</span>',
+    '        </a>',
+    '      </li>',
+    '    </ul>',
+    '',
+    user ? [
+      '    <div class="mobile-drawer-section-title">Akun & Profil</div>',
+      '    <ul class="mobile-drawer-nav">',
+      '      <li><a href="profile.html?tab=overview" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">👤</span> Profil Saya</a></li>',
+      '      <li><a href="profile.html?tab=orders" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">📦</span> Riwayat Pesanan</a></li>',
+      '      <li><a href="profile.html?tab=edit" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">✏️</span> Edit Profil</a></li>',
+      '      <li><a href="profile.html?tab=password" class="mobile-nav-item" onclick="closeMobileNav()"><span class="nav-item-icon">🔒</span> Ganti Kata Sandi</a></li>',
+      '      <li><button type="button" onclick="closeMobileNav(); logoutUser();" class="mobile-nav-item logout-btn"><span class="nav-item-icon">🚪</span> Keluar (Logout)</button></li>',
+      '    </ul>'
+    ].join('\n') : '',
+    '  </div>',
+    '</aside>',,
 
     '<!-- SEARCH MODAL OVERLAY -->',
     '<div class="search-modal-overlay" id="searchModalOverlay" onclick="handleSearchOverlayClick(event)">',
@@ -742,8 +839,42 @@ function renderFloatingCS(activePage = '') {
 function updateNavBadges() {
   const cBadge = document.getElementById('navCartBadge');
   const wBadge = document.getElementById('navWishlistBadge');
-  if (cBadge) cBadge.textContent = getCartCount();
-  if (wBadge) wBadge.textContent = getWishlistCount();
+  const dcBadge = document.getElementById('drawerCartBadge');
+  const dwBadge = document.getElementById('drawerWishlistBadge');
+  const cCount = getCartCount();
+  const wCount = getWishlistCount();
+  if (cBadge) cBadge.textContent = cCount;
+  if (wBadge) wBadge.textContent = wCount;
+  if (dcBadge) dcBadge.textContent = cCount;
+  if (dwBadge) dwBadge.textContent = wCount;
+}
+
+function toggleMobileNav(event) {
+  if (event) event.stopPropagation();
+  const drawer = document.getElementById('mobileNavDrawer');
+  const backdrop = document.getElementById('mobileNavBackdrop');
+  const btn = document.getElementById('navHamburgerBtn');
+  if (drawer && backdrop) {
+    const isOpen = drawer.classList.contains('open');
+    if (isOpen) {
+      closeMobileNav();
+    } else {
+      drawer.classList.add('open');
+      backdrop.classList.add('open');
+      if (btn) btn.classList.add('active');
+      if (document.body) document.body.style.overflow = 'hidden';
+    }
+  }
+}
+
+function closeMobileNav() {
+  const drawer = document.getElementById('mobileNavDrawer');
+  const backdrop = document.getElementById('mobileNavBackdrop');
+  const btn = document.getElementById('navHamburgerBtn');
+  if (drawer) drawer.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  if (btn) btn.classList.remove('active');
+  if (document.body) document.body.style.overflow = '';
 }
 
 function toggleUserMenu(event) {
@@ -757,6 +888,15 @@ if (typeof document !== 'undefined') {
     const menu = document.getElementById('userDropdownMenu');
     if (menu) menu.classList.remove('show');
   });
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) closeMobileNav();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+  }
 
   const ensureFloatingCS = () => {
     const isCs = typeof window !== 'undefined' && (window.location.pathname || '').toLowerCase().endsWith('cs.html');

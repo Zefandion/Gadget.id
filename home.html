@@ -50,6 +50,24 @@
     .catalog-count-info strong {
       color: var(--black);
     }
+    @media (max-width: 600px) {
+      .catalog-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+      }
+      .sort-wrap {
+        justify-content: space-between;
+        width: 100%;
+      }
+      .sort-select {
+        flex: 1;
+      }
+      .catalog-count-info {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body class="page-wrapper">

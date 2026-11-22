@@ -472,6 +472,97 @@
         justify-content: center;
       }
     }
+    @media (max-width: 768px) {
+      .welcome-hero {
+        padding: 3.5rem 1.2rem 4rem;
+      }
+      .welcome-text h1 {
+        font-size: 2rem;
+      }
+      .welcome-text p {
+        font-size: 0.98rem;
+        margin-bottom: 1.8rem;
+      }
+      .welcome-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.8rem;
+      }
+      .btn-main-cta, .btn-sub-cta {
+        width: 100%;
+        justify-content: center;
+        padding: 13px 20px;
+        font-size: 0.95rem;
+      }
+      .phone-showcase-box {
+        max-width: 260px;
+      }
+      .floating-badge-1 {
+        left: -10px;
+        top: 8%;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+      .floating-badge-2 {
+        right: -10px;
+        bottom: 8%;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+      .pillars-section, .highlights-section, .testi-section, .cta-final-section {
+        padding: 3rem 1.2rem;
+      }
+      .section-header-center {
+        margin-bottom: 2.2rem;
+      }
+      .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .highlight-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .flash-banner {
+        padding: 2rem 1.2rem;
+        margin: 2.5rem auto 0;
+        border-radius: 18px;
+      }
+      .flash-left h2 {
+        font-size: 1.6rem;
+      }
+      .countdown-boxes {
+        gap: 8px;
+      }
+      .c-box {
+        padding: 8px 12px;
+      }
+      .c-num {
+        font-size: 1.2rem;
+      }
+      .testi-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .cta-final-content h2 {
+        font-size: 1.8rem;
+      }
+      .cta-final-content p {
+        font-size: 0.95rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .floating-badge-1, .floating-badge-2 {
+        position: static;
+        margin: 6px auto;
+        display: inline-flex;
+        animation: none;
+      }
+      .welcome-visual {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body class="page-wrapper">

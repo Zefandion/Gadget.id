@@ -279,6 +279,42 @@
         grid-template-columns: 1fr;
       }
     }
+    @media (max-width: 600px) {
+      .profile-page-wrap {
+        padding: 1.5rem 1rem;
+      }
+      .profile-nav-list {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 6px;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .profile-nav-list::-webkit-scrollbar {
+        display: none;
+      }
+      .p-nav-btn {
+        white-space: nowrap;
+        padding: 8px 12px;
+        font-size: 0.82rem;
+      }
+      .profile-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .profile-stat-card {
+        padding: 1rem 0.8rem;
+      }
+      .profile-content-card {
+        padding: 1.2rem;
+      }
+      .order-item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
   </style>
 </head>
 <body class="page-wrapper">
