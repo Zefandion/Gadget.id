@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metode Pembayaran - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .payment-page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem;
+    }
+
+    /* Checkout Steps Bar */
+    .checkout-steps-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: var(--gray-400);
+      font-weight: 600;
+    }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .step-item.active {
+      color: var(--red);
+    }
+    .step-item.active .step-num {
+      background: var(--red);
+      color: #fff;
+    }
+    .step-item.done {
+      color: #10B981;
+    }
+    .step-item.done .step-num {
+      background: #10B981;
+      color: #fff;
+    }
+    .step-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--gray-200);
+    }
+
+    /* Timer banner */
+    .payment-timer-banner {
+      background: linear-gradient(90deg, #FFF0F0 0%, #FFE5E5 100%);
+      border: 1.5px solid #FFCDCD;
+      border-radius: 16px;
+      padding: 1.2rem 1.8rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .timer-text-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .timer-text-box .icon {
+      font-size: 1.8rem;
+    }
+    .timer-text-box strong {
+      font-size: 1rem;
+      color: var(--red);
+      display: block;
+    }
+    .timer-countdown {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--red);
+      background: #fff;
+      padding: 6px 16px;
+      border-radius: 10px;
+      border: 1px solid #FFCDCD;
+    }
+
+    .payment-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Payment Category Groups */
+    .payment-group-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+    }
+    .group-card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .methods-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .pay-card-opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pay-card-opt:hover {
+      border-color: var(--red);
+      background: #FFFDFD;
+    }
+    .pay-card-opt.selected {
+      border-color: var(--red);
+      background: var(--red-pale);
+      box-shadow: 0 4px 12px rgba(224, 26, 26, 0.08);
+    }
+    .pay-card-opt input[type=radio] {
+      accent-color: var(--red);
+    }
+    .pay-icon-box {
+      width: 44px;
+      height: 44px;
+      background: var(--gray-100);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .pay-detail-info {
+      flex: 1;
+    }
+    .pay-method-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--black);
+    }
+    .pay-method-desc {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+    .badge-auto-verify {
+      font-size: 0.72rem;
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+    }
+
+    /* Summary Card */
+    .pay-summary-box {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2rem;
+      position: sticky;
+      top: 90px;
+    }
+    .pay-summary-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+    .recipient-preview-box {
+      background: var(--gray-50);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .recipient-preview-box strong {
+      display: block;
+      color: var(--black);
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .btn-pay-now {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-top: 1.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.25);
+    }
+    .btn-pay-now:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================
+       POP UP PEMBAYARAN (MODAL)
+       ========================================================== */
+    .pay-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 4000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .pay-modal-overlay.open {
+      display: flex;
+    }
+    .pay-modal-box {
+      background: var(--white);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      animation: modalScaleIn 0.25s ease;
+    }
+    .pay-modal-header {
+      background: linear-gradient(135deg, #E01A1A 0%, #B01212 100%);
+      color: #fff;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pay-modal-header h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .pay-modal-close {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .pay-modal-body {
+      padding: 2rem;
+    }
+    .va-display-card {
+      background: var(--gray-50);
+      border: 1.5px dashed var(--red);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .va-number-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: 2px;
+      margin: 8px 0;
+    }
+    .btn-copy-code {
+      background: var(--white);
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      transition: all 0.2s;
+    }
+    .btn-copy-code:hover {
+      background: var(--red-pale);
+    }
+    .qris-qr-code-box {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+    .qris-qr-img {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .instructions-accordion-box {
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .inst-header {
+      padding: 12px 16px;
+      background: var(--gray-50);
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .inst-body {
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--gray-600);
+    }
+    .inst-body ol {
+      padding-left: 1.2rem;
+    }
+    .pay-confirm-btn {
+      width: 100%;
+      background: #10B981;
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    }
+    .pay-confirm-btn:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    /* SUCCESS MODAL VIEW */
+    .success-view-content {
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .success-badge-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    .success-order-id-pill {
+      display: inline-block;
+      background: var(--red-pale);
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      padding: 8px 24px;
+      border-radius: 50px;
+      margin: 1rem 0 1.5rem;
+      border: 1px solid #FFCDCD;
+    }
+
+    @media (max-width: 900px) {
+      .payment-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .pay-summary-box {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="payment-page-wrap">
+      <!-- STEPS BAR -->
+      <div class="checkout-steps-bar">
+        <div class="step-item done">
+          <div class="step-num">✓</div>
+          <span>Keranjang</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item done">
+          <div class="step-num">✓</div>
+          <span>Pengiriman</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item active">
+          <div class="step-num">3</div>
+          <span>Pembayaran</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <span>Selesai</span>
+        </div>
+      </div>
+
+      <!-- TIMER BANNER -->
+      <div class="payment-timer-banner">
+        <div class="timer-text-box">
+          <span class="icon">⏳</span>
+          <div>
+            <strong>Batas Waktu Pembayaran</strong>
+            <span style="font-size:0.85rem;color:var(--gray-600)">Selesaikan transaksi Anda sebelum batas waktu habis agar pesanan tidak dibatalkan otomatis.</span>
+          </div>
+        </div>
+        <div class="timer-countdown" id="paymentTimerDisplay">23:59:45</div>
+      </div>
+
+      <!-- MAIN PAYMENT CONTENT -->
+      <div class="payment-main-grid">
+        <!-- LEFT: PAYMENT METHODS -->
+        <div>
+          <!-- CATEGORY 1: VIRTUAL ACCOUNT -->
+          <div class="payment-group-card">
+            <div class="group-card-title">
+              <span>🏦</span> Transfer Bank (Virtual Account Otomatis)
+            </div>
+            <div class="methods-list">
+              <label class="pay-card-opt selected" onclick="pickPaymentMethod(this, 'BCA Virtual Account', 'bca')">
+                <input type="radio" name="payMethod" value="bca" checked>
+                <div class="pay-icon-box">🏛️</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">BCA Virtual Account</div>
+                  <div class="pay-method-desc">Verifikasi otomatis tanpa perlu upload bukti transfer</div>
+                </div>
+                <span class="badge-auto-verify">Instan ✓</span>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'Mandiri Virtual Account', 'mandiri')">
+                <input type="radio" name="payMethod" value="mandiri">
+                <div class="pay-icon-box">🏛️</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">Mandiri Virtual Account (Livin')</div>
+                  <div class="pay-method-desc">Bayar mudah via Livin by Mandiri &amp; ATM Mandiri</div>
+                </div>
+                <span class="badge-auto-verify">Instan ✓</span>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'BNI Virtual Account', 'bni')">
+                <input type="radio" name="payMethod" value="bni">
+                <div class="pay-icon-box">🏛️</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">BNI Virtual Account</div>
+                  <div class="pay-method-desc">Bayar via BNI Mobile Banking, SMS Banking &amp; ATM BNI</div>
+                </div>
+                <span class="badge-auto-verify">Instan ✓</span>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'BRI Virtual Account (BRIVA)', 'bri')">
+                <input type="radio" name="payMethod" value="bri">
+                <div class="pay-icon-box">🏛️</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">BRI Virtual Account (BRIVA)</div>
+                  <div class="pay-method-desc">Pembayaran via BRImo &amp; jaringan ATM BRI</div>
+                </div>
+                <span class="badge-auto-verify">Instan ✓</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- CATEGORY 2: E-WALLET & QRIS -->
+          <div class="payment-group-card">
+            <div class="group-card-title">
+              <span>📱</span> E-Wallet &amp; QRIS (Scan Instan)
+            </div>
+            <div class="methods-list">
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'QRIS (Semua Bank & E-Wallet)', 'qris')">
+                <input type="radio" name="payMethod" value="qris">
+                <div class="pay-icon-box">📲</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">QRIS Standar Nasional</div>
+                  <div class="pay-method-desc">Scan langsung dari BCA, Mandiri, GoPay, OVO, DANA, ShopeePay</div>
+                </div>
+                <span class="badge-auto-verify">Bebas Biaya</span>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'GoPay', 'gopay')">
+                <input type="radio" name="payMethod" value="gopay">
+                <div class="pay-icon-box">🟢</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">GoPay / GoPay Later</div>
+                  <div class="pay-method-desc">Terhubung langsung dengan aplikasi Gojek</div>
+                </div>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'DANA', 'dana')">
+                <input type="radio" name="payMethod" value="dana">
+                <div class="pay-icon-box">🔵</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">DANA Dompet Digital</div>
+                  <div class="pay-method-desc">Pembayaran praktis dengan saldo DANA Anda</div>
+                </div>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'OVO', 'ovo')">
+                <input type="radio" name="payMethod" value="ovo">
+                <div class="pay-icon-box">🟣</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">OVO Cash</div>
+                  <div class="pay-method-desc">Bayar via notifikasi aplikasi OVO di smartphone Anda</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- CATEGORY 3: COD & CREDIT CARD -->
+          <div class="payment-group-card">
+            <div class="group-card-title">
+              <span>💳</span> COD &amp; Kartu Kredit
+            </div>
+            <div class="methods-list">
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'COD (Bayar di Tempat)', 'cod')">
+                <input type="radio" name="payMethod" value="cod">
+                <div class="pay-icon-box">💵</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">COD (Cash on Delivery)</div>
+                  <div class="pay-method-desc">Bayar tunai ke kurir saat paket gadget Anda tiba di rumah</div>
+                </div>
+              </label>
+
+              <label class="pay-card-opt" onclick="pickPaymentMethod(this, 'Kartu Kredit / Cicilan 0%', 'cc')">
+                <input type="radio" name="payMethod" value="cc">
+                <div class="pay-icon-box">💳</div>
+                <div class="pay-detail-info">
+                  <div class="pay-method-name">Kartu Kredit &amp; Debit Online</div>
+                  <div class="pay-method-desc">Visa, Mastercard, JCB dengan opsi Cicilan 0% hingga 12 bulan</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: SUMMARY & BUTTON -->
+        <div>
+          <div class="pay-summary-box">
+            <div class="pay-summary-title">Rincian Pembayaran</div>
+
+            <div class="recipient-preview-box">
+              <strong id="recipName">Nama Penerima</strong>
+              <div id="recipPhone">081234567890</div>
+              <div id="recipAddress" style="color:var(--gray-600);margin-top:2px;">Alamat pengiriman</div>
+              <div id="recipCourier" style="margin-top:4px;color:var(--red);font-weight:600;">J&amp;T Express</div>
+            </div>
+
+            <div class="summary-calc-row">
+              <span>Metode Dipilih</span>
+              <span id="selectedMethodBadge" style="font-weight:700;color:var(--black);">BCA Virtual Account</span>
+            </div>
+            <div class="summary-calc-row">
+              <span>Subtotal Produk</span>
+              <span id="pSubtotal" style="font-weight:600;color:var(--black);">Rp 0</span>
+            </div>
+            <div class="summary-calc-row">
+              <span>Ongkos Kirim</span>
+              <span style="color:#10B981;font-weight:700;">GRATIS</span>
+            </div>
+            <div class="summary-calc-row">
+              <span>Kode Unik Verifikasi</span>
+              <span style="color:var(--gray-600);">Gratis (0)</span>
+            </div>
+            <div class="summary-calc-row total-row">
+              <span>Total Tagihan</span>
+              <span id="pTotal">Rp 0</span>
+            </div>
+
+            <button type="button" class="btn-pay-now" onclick="openPaymentPopup()">
+              🔒 Bayar Sekarang
+            </button>
+
+            <div class="secure-checkout-hint">
+              🛡️ Dijamin 100% Aman · Garansi Uang Kembali
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================
+       POP UP PEMBAYARAN (MODAL)
+       ========================================================== -->
+  <div class="pay-modal-overlay" id="payModalOverlay">
+    <div class="pay-modal-box">
+      <div class="pay-modal-header">
+        <h3 id="modalPaymentTitle">Pembayaran BCA Virtual Account</h3>
+        <button class="pay-modal-close" onclick="closePaymentPopup()">✕</button>
+      </div>
+
+      <div class="pay-modal-body" id="modalPaymentBody">
+        <!-- VIRTUAL ACCOUNT / QRIS DISPLAY -->
+        <div id="modalInstructionsWrap">
+          <div style="text-align:center;margin-bottom:1.2rem;">
+            <div style="font-size:0.85rem;color:var(--gray-400)">Selesaikan pembayaran sebelum</div>
+            <div style="font-size:1.1rem;font-weight:800;color:var(--red);" id="modalTimeRemaining">23 jam 59 menit</div>
+          </div>
+
+          <!-- VA CARD -->
+          <div class="va-display-card" id="vaCardSection">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;">Nomor Virtual Account Resmi:</div>
+            <div class="va-number-text" id="vaNumberDisplay">8801 8921 4092 1823</div>
+            <button class="btn-copy-code" onclick="copyToClipboard('8801892140921823', 'Nomor Virtual Account')">
+              📋 Salin No. VA
+            </button>
+          </div>
+
+          <!-- QRIS CARD -->
+          <div class="qris-qr-code-box" id="qrisSection" style="display:none;">
+            <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;">Scan QRIS via Aplikasi Bank / E-Wallet</div>
+            <!-- Simulated QRIS Barcode SVG -->
+            <svg width="200" height="200" viewBox="0 0 200 200" style="margin:0 auto;display:block;">
+              <rect width="200" height="200" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" rx="10"/>
+              <!-- QR Patterns -->
+              <rect x="20" y="20" width="50" height="50" fill="#111"/>
+              <rect x="30" y="30" width="30" height="30" fill="#fff"/>
+              <rect x="38" y="38" width="14" height="14" fill="#E01A1A"/>
+              <rect x="130" y="20" width="50" height="50" fill="#111"/>
+              <rect x="140" y="30" width="30" height="30" fill="#fff"/>
+              <rect x="148" y="38" width="14" height="14" fill="#E01A1A"/>
+              <rect x="20" y="130" width="50" height="50" fill="#111"/>
+              <rect x="30" y="140" width="30" height="30" fill="#fff"/>
+              <rect x="38" y="148" width="14" height="14" fill="#E01A1A"/>
+              <!-- Data Dots -->
+              <rect x="80" y="25" width="12" height="12" fill="#333"/>
+              <rect x="100" y="40" width="15" height="15" fill="#333"/>
+              <rect x="85" y="70" width="20" height="20" fill="#111"/>
+              <rect x="120" y="80" width="15" height="15" fill="#333"/>
+              <rect x="35" y="85" width="25" height="15" fill="#333"/>
+              <rect x="80" y="120" width="20" height="15" fill="#333"/>
+              <rect x="115" y="115" width="25" height="25" fill="#111"/>
+              <rect x="150" y="125" width="20" height="15" fill="#333"/>
+              <rect x="85" y="155" width="30" height="15" fill="#E01A1A"/>
+              <rect x="135" y="155" width="25" height="25" fill="#333"/>
+              <text x="100" y="105" font-family="Syne, sans-serif" font-size="12" font-weight="bold" fill="#E01A1A" text-anchor="middle">Gadget.Id</text>
+            </svg>
+            <div style="font-size:0.82rem;color:var(--gray-400);margin-top:10px;">Berlaku untuk semua aplikasi perbankan &amp; e-wallet</div>
+          </div>
+
+          <!-- TOTAL SUMMARY IN MODAL -->
+          <div style="background:var(--gray-50);border-radius:12px;padding:1rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:0.8rem;color:var(--gray-400)">Total yang Harus Dibayar:</div>
+              <div style="font-size:1.3rem;font-weight:800;color:var(--red);" id="modalTotalDisplay">Rp 0</div>
+            </div>
+            <button class="btn-copy-code" onclick="copyNominal()" style="margin:0;">
+              📋 Salin Nominal
+            </button>
+          </div>
+
+          <!-- INSTRUCTIONS ACCORDION -->
+          <div class="instructions-accordion-box">
+            <div class="inst-header">
+              <span>Cara Pembayaran</span>
+              <span>▾</span>
+            </div>
+            <div class="inst-body" id="modalInstBody">
+              <ol>
+                <li>Buka aplikasi Mobile Banking atau kunjungi ATM terdekat.</li>
+                <li>Pilih menu <strong>Transfer</strong> &gt; <strong>Virtual Account</strong>.</li>
+                <li>Masukkan nomor Virtual Account resmi di atas.</li>
+                <li>Periksa detail tagihan, pastikan nama penerima adalah <strong>Gadget.Id Official</strong>.</li>
+                <li>Konfirmasi pembayaran dan masukkan PIN Anda.</li>
+                <li>Klik tombol <strong>"Saya Sudah Membayar"</strong> di bawah untuk verifikasi instan.</li>
+              </ol>
+            </div>
+          </div>
+
+          <button type="button" class="pay-confirm-btn" id="btnConfirmPaid" onclick="handleConfirmPaymentSuccess()">
+            ✅ Saya Sudah Membayar (Verifikasi Instan)
+          </button>
+          <button type="button" class="btn-sub-cta" style="width:100%;color:var(--gray-600);border-color:var(--gray-200);margin-top:10px;justify-content:center;" onclick="closePaymentPopup()">
+            Bayar Nanti
+          </button>
+        </div>
+
+        <!-- SUCCESS VIEW (REPLACES CONTENT WHEN CONFIRMED) -->
+        <div id="modalSuccessView" style="display:none;" class="success-view-content">
+          <div class="success-badge-icon">🎉</div>
+          <h2 style="font-size:1.8rem;font-weight:800;color:var(--black);margin-bottom:0.4rem;">Pembayaran Berhasil!</h2>
+          <p style="color:var(--gray-600);font-size:0.95rem;">Terima kasih! Pembayaran Anda telah kami terima dan diverifikasi secara otomatis.</p>
+
+          <div class="success-order-id-pill" id="successOrderIdDisplay">
+            #GDT-882914
+          </div>
+
+          <div style="background:var(--gray-50);border-radius:14px;padding:1.2rem;text-align:left;font-size:0.9rem;margin-bottom:1.8rem;border:1px solid var(--gray-200);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span style="color:var(--gray-400)">Status Pesanan:</span>
+              <span style="color:#10B981;font-weight:700;">Diproses &amp; Dikemas ✓</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span style="color:var(--gray-400)">Estimasi Tiba:</span>
+              <span style="font-weight:600;">1–2 Hari Kerja</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--gray-400)">Bukti Transaksi:</span>
+              <span style="font-weight:600;">Terkirim ke Email</span>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <a href="profile.html?tab=orders" class="btn-cart-action" style="text-decoration:none;font-size:0.92rem;justify-content:center;">
+              📦 Cek Status di Profil
+            </a>
+            <a href="home.html" class="btn-sub-cta" style="color:var(--black);border-color:var(--gray-200);text-decoration:none;font-size:0.92rem;justify-content:center;">
+              Kembali ke Beranda
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('payment');
+    renderNavbar('payment');
+    renderFooter();
+
+    let chosenPaymentMethod = 'BCA Virtual Account';
+    let chosenMethodCode = 'bca';
+    let checkoutInfo = {};
+    let orderTotal = 0;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const cart = getCart();
+      if (!cart.length) {
+        showToast('⚠️', 'Keranjang belanja Anda kosong.');
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 1200);
+        return;
+      }
+
+      orderTotal = getCartTotal();
+      document.getElementById('pSubtotal').textContent = formatRp(orderTotal);
+      document.getElementById('pTotal').textContent = formatRp(orderTotal);
+      document.getElementById('modalTotalDisplay').textContent = formatRp(orderTotal);
+
+      // Load checkout info
+      try {
+        checkoutInfo = JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECKOUT_INFO)) || {};
+      } catch (e) {
+        checkoutInfo = {};
+      }
+
+      if (checkoutInfo.name) {
+        document.getElementById('recipName').textContent = checkoutInfo.name;
+        document.getElementById('recipPhone').textContent = checkoutInfo.phone || '';
+        document.getElementById('recipAddress').textContent = `${checkoutInfo.address || ''}, ${checkoutInfo.city || ''}`;
+        document.getElementById('recipCourier').textContent = `${checkoutInfo.courier || 'J&T Express'} (Gratis Ongkir)`;
+      } else {
+        const user = getCurrentUser();
+        if (user) {
+          document.getElementById('recipName').textContent = user.name;
+          document.getElementById('recipPhone').textContent = user.phone;
+          document.getElementById('recipAddress').textContent = user.address;
+        }
+      }
+
+      // Countdown Timer Simulator
+      startPaymentTimer();
+    });
+
+    function startPaymentTimer() {
+      let sec = 45, min = 59, hr = 23;
+      setInterval(() => {
+        sec--;
+        if (sec < 0) { sec = 59; min--; }
+        if (min < 0) { min = 59; hr--; }
+        const formatted = `${String(hr).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+        const el = document.getElementById('paymentTimerDisplay');
+        if (el) el.textContent = formatted;
+        const modalTimer = document.getElementById('modalTimeRemaining');
+        if (modalTimer) modalTimer.textContent = `${hr} jam ${min} menit ${sec} detik`;
+      }, 1000);
+    }
+
+    function pickPaymentMethod(cardEl, name, code) {
+      document.querySelectorAll('.pay-card-opt').forEach(c => c.classList.remove('selected'));
+      cardEl.classList.add('selected');
+      cardEl.querySelector('input[type=radio]').checked = true;
+      chosenPaymentMethod = name;
+      chosenMethodCode = code;
+      document.getElementById('selectedMethodBadge').textContent = name;
+    }
+
+    // ==========================================
+    // POP UP PEMBAYARAN CONTROLLERS
+    // ==========================================
+    function openPaymentPopup() {
+      const modal = document.getElementById('payModalOverlay');
+      document.getElementById('modalPaymentTitle').textContent = `Pembayaran ${chosenPaymentMethod}`;
+
+      const vaCard = document.getElementById('vaCardSection');
+      const qrisCard = document.getElementById('qrisSection');
+      const instBody = document.getElementById('modalInstBody');
+
+      // Customize content based on chosen method
+      if (chosenMethodCode === 'qris') {
+        vaCard.style.display = 'none';
+        qrisCard.style.display = 'block';
+        instBody.innerHTML = `
+          <ol>
+            <li>Buka aplikasi perbankan atau e-wallet (BCA, Mandiri, GoPay, OVO, DANA, dll).</li>
+            <li>Pilih menu <strong>Bayar via QRIS</strong>.</li>
+            <li>Scan QR Code di atas.</li>
+            <li>Pastikan merchant terdaftar adalah <strong>Gadget.Id Official Store</strong>.</li>
+            <li>Klik konfirmasi pembayaran dan masukkan PIN Anda.</li>
+          </ol>
+        `;
+      } else if (chosenMethodCode === 'cod') {
+        vaCard.style.display = 'none';
+        qrisCard.style.display = 'none';
+        instBody.innerHTML = `
+          <div style="background:#FFF9C4;border-left:4px solid #FBC02D;padding:10px;border-radius:4px;margin-bottom:10px;">
+            <strong>Instruksi Bayar di Tempat (COD):</strong>
+          </div>
+          <p>Pesanan akan segera diproses dan dikirim ke alamat tujuan. Siapkan uang tunai pas sebesar <strong>${formatRp(orderTotal)}</strong> saat kurir tiba di alamat Anda.</p>
+        `;
+      } else {
+        vaCard.style.display = 'block';
+        qrisCard.style.display = 'none';
+
+        // Generate synthetic VA based on code
+        const vaPrefix = { bca: '8801', mandiri: '8910', bni: '9881', bri: '1029' }[chosenMethodCode] || '8801';
+        const fullVA = `${vaPrefix} 8921 4092 1823`;
+        document.getElementById('vaNumberDisplay').textContent = fullVA;
+
+        instBody.innerHTML = `
+          <ol>
+            <li>Buka aplikasi Mobile Banking Anda atau kunjungi ATM terdekat.</li>
+            <li>Pilih menu <strong>Transfer</strong> &gt; <strong>Virtual Account</strong>.</li>
+            <li>Masukkan nomor VA: <strong>${fullVA}</strong>.</li>
+            <li>Pastikan total tagihan dan penerima sesuai (<strong>Gadget.Id Official</strong>).</li>
+            <li>Konfirmasi pembayaran lalu simpan bukti transaksi Anda.</li>
+          </ol>
+        `;
+      }
+
+      modal.classList.add('open');
+    }
+
+    function closePaymentPopup() {
+      document.getElementById('payModalOverlay').classList.remove('open');
+    }
+
+    function copyToClipboard(text, label) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      }
+      showToast('📋', `${label} berhasil disalin ke clipboard!`);
+    }
+
+    function copyNominal() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(String(orderTotal));
+      }
+      showToast('📋', `Nominal ${formatRp(orderTotal)} berhasil disalin!`);
+    }
+
+    function handleConfirmPaymentSuccess() {
+      const btn = document.getElementById('btnConfirmPaid');
+      btn.disabled = true;
+      btn.textContent = 'Memverifikasi Pembayaran...';
+
+      setTimeout(() => {
+        // Create Order in local storage
+        const newOrder = createOrder({
+          paymentMethod: chosenPaymentMethod,
+          shippingCourier: checkoutInfo.courier || 'J&T Express',
+          customer: checkoutInfo,
+          total: orderTotal
+        });
+
+        // Hide instructions and show success view
+        document.getElementById('modalInstructionsWrap').style.display = 'none';
+        document.getElementById('modalSuccessView').style.display = 'block';
+        document.getElementById('successOrderIdDisplay').textContent = newOrder.id;
+
+        showToast('🎉', 'Pembayaran Terkonfirmasi! Pesanan ' + newOrder.id + ' sedang diproses.');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

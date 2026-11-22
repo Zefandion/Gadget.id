@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up (Daftar Akun Baru) - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .auth-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--gray-50);
+    }
+    .auth-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+    .auth-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      padding: 2.8rem 2.2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+    .auth-brand-logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .auth-brand-logo a {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--red);
+      text-decoration: none;
+      letter-spacing: -1px;
+    }
+    .auth-brand-logo a span {
+      color: var(--black);
+    }
+    .auth-heading {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-heading h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 0.4rem;
+    }
+    .auth-heading p {
+      font-size: 0.92rem;
+      color: var(--gray-400);
+    }
+    .input-password-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-password-wrap input {
+      padding-right: 45px;
+    }
+    .pw-toggle-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-400);
+      font-size: 1.1rem;
+      padding: 4px;
+    }
+    .strength-meter-wrap {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .strength-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s;
+    }
+    .strength-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gray-400);
+    }
+    .terms-box {
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.4;
+    }
+    .terms-box input {
+      margin-top: 3px;
+      accent-color: var(--red);
+    }
+    .btn-submit-auth {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.25);
+    }
+    .btn-submit-auth:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+    }
+    .auth-footer-prompt {
+      text-align: center;
+      margin-top: 1.8rem;
+      font-size: 0.92rem;
+      color: var(--gray-600);
+    }
+    .auth-footer-prompt a {
+      color: var(--red);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .auth-footer-prompt a:hover {
+      text-decoration: underline;
+    }
+    .back-home-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--gray-400);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .back-home-link:hover {
+      color: var(--black);
+    }
+  </style>
+</head>
+<body class="auth-page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-brand-logo">
+        <a href="index.html">Gadget<span>.Id</span></a>
+      </div>
+
+      <div class="auth-heading">
+        <h2>Buat Akun Baru</h2>
+        <p>Bergabunglah dengan ribuan pelanggan resmi Gadget.Id</p>
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegisterSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="regName">Nama Lengkap <span>*</span></label>
+          <input type="text" id="regName" class="form-input" placeholder="Masukkan nama lengkap Anda" required minlength="3">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Alamat Email <span>*</span></label>
+            <input type="email" id="regEmail" class="form-input" placeholder="nama@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPhone">Nomor WhatsApp / HP <span>*</span></label>
+            <input type="tel" id="regPhone" class="form-input" placeholder="08xxxxxxxxxx" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Kata Sandi <span>*</span></label>
+          <div class="input-password-wrap">
+            <input type="password" id="regPassword" class="form-input" placeholder="Minimal 6 karakter" required minlength="6" oninput="checkPasswordStrength(this.value)">
+            <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('regPassword', this)">👁️</button>
+          </div>
+          <div class="strength-meter-wrap">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <span class="strength-label" id="strengthLabel">Kekuatan Sandi</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regConfirmPassword">Konfirmasi Kata Sandi <span>*</span></label>
+          <div class="input-password-wrap">
+            <input type="password" id="regConfirmPassword" class="form-input" placeholder="Ulangi kata sandi" required minlength="6">
+            <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('regConfirmPassword', this)">👁️</button>
+          </div>
+        </div>
+
+        <label class="terms-box">
+          <input type="checkbox" id="regTerms" required>
+          <span>Saya telah membaca dan menyetujui <a href="cs.html#terms" style="color:var(--red);text-decoration:underline;">Syarat & Ketentuan</a> serta Kebijakan Privasi Gadget.Id.</span>
+        </label>
+
+        <button type="submit" class="btn-submit-auth" id="btnRegister">
+          Daftar Akun Baru Sekarang
+        </button>
+      </form>
+
+      <div class="auth-footer-prompt">
+        Sudah memiliki akun? <a href="login.html">Sign In di sini</a>
+      </div>
+
+      <a href="home.html" class="back-home-link">← Kembali ke Halaman Utama Toko</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('register');
+    renderNavbar('register');
+    renderFooter();
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    function checkPasswordStrength(pw) {
+      const fill = document.getElementById('strengthFill');
+      const lbl = document.getElementById('strengthLabel');
+      if (!pw) {
+        fill.style.width = '0%';
+        lbl.textContent = 'Kekuatan Sandi';
+        lbl.style.color = 'var(--gray-400)';
+        return;
+      }
+      let score = 0;
+      if (pw.length >= 6) score++;
+      if (pw.length >= 9) score++;
+      if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+      if (score <= 1) {
+        fill.style.width = '30%';
+        fill.style.background = '#EF4444';
+        lbl.textContent = 'Lemah';
+        lbl.style.color = '#EF4444';
+      } else if (score === 2) {
+        fill.style.width = '65%';
+        fill.style.background = '#F59E0B';
+        lbl.textContent = 'Sedang';
+        lbl.style.color = '#F59E0B';
+      } else {
+        fill.style.width = '100%';
+        fill.style.background = '#10B981';
+        lbl.textContent = 'Kuat ✓';
+        lbl.style.color = '#10B981';
+      }
+    }
+
+    function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+      const terms = document.getElementById('regTerms').checked;
+      const btn = document.getElementById('btnRegister');
+
+      if (password !== confirmPassword) {
+        showToast('⚠️', 'Konfirmasi kata sandi tidak cocok!');
+        document.getElementById('regConfirmPassword').focus();
+        return;
+      }
+
+      if (!terms) {
+        showToast('⚠️', 'Mohon centang persetujuan Syarat & Ketentuan.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Membuat akun Anda...';
+
+      setTimeout(() => {
+        const result = registerUser({ name, email, phone, password });
+        if (result.success) {
+          showToast('🎉', 'Akun berhasil didaftarkan! Selamat datang, ' + name);
+          setTimeout(() => {
+            const redirectUrl = sessionStorage.getItem('gadgetid_redirect_after_login') || 'home.html';
+          sessionStorage.removeItem('gadgetid_redirect_after_login');
+          window.location.href = redirectUrl;
+          }, 1000);
+        } else {
+          showToast('⚠️', result.message);
+          btn.disabled = false;
+          btn.textContent = 'Daftar Akun Baru Sekarang';
+        }
+      }, 700);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Saya &amp; Pengaturan Akun - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .profile-page-wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem;
+    }
+    .profile-layout-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Sidebar Profile Card */
+    .profile-sidebar-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      padding: 2rem;
+      text-align: center;
+      position: sticky;
+      top: 90px;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.2rem;
+    }
+    .profile-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--red);
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.2);
+    }
+    .profile-user-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+    .profile-user-email {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      margin-bottom: 0.8rem;
+      word-break: break-all;
+    }
+    .profile-tier-badge {
+      display: inline-block;
+      background: var(--red-pale);
+      color: var(--red);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 50px;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Nav Tabs */
+    .profile-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+    .p-nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .p-nav-btn:hover {
+      background: var(--gray-100);
+      color: var(--black);
+    }
+    .p-nav-btn.active {
+      background: var(--red-pale);
+      color: var(--red);
+      font-weight: 700;
+    }
+    .p-nav-btn .icon {
+      font-size: 1.2rem;
+    }
+
+    /* Content Area */
+    .profile-content-panel {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      padding: 2.5rem;
+    }
+    .panel-heading-row {
+      margin-bottom: 2rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1.5px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .panel-heading-row h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--black);
+    }
+
+    /* Stat Widgets */
+    .stats-widget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2.2rem;
+    }
+    .stat-widget-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--red-pale);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .stat-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--black);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .stat-lbl {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      font-weight: 600;
+    }
+
+    /* Profile Details Grid */
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.2rem;
+    }
+    .info-card-item {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 1.2rem;
+    }
+    .info-card-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .info-card-val {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    /* Avatar Preset Picker */
+    .avatar-presets-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .preset-avatar-option {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      padding: 2px;
+      transition: all 0.2s;
+    }
+    .preset-avatar-option img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .preset-avatar-option.selected {
+      border-color: var(--red);
+      transform: scale(1.1);
+    }
+
+    /* Order History Cards */
+    .order-card-box {
+      border: 1.5px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .order-card-header {
+      background: var(--gray-50);
+      padding: 1rem 1.4rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .order-card-body {
+      padding: 1.4rem;
+    }
+    .order-item-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .order-item-thumb {
+      width: 48px;
+      height: 48px;
+      background: var(--gray-100);
+      border-radius: 8px;
+      object-fit: contain;
+      padding: 4px;
+    }
+    .order-card-footer {
+      background: #FAFAFA;
+      padding: 1rem 1.4rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .order-status-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+    }
+
+    @media (max-width: 900px) {
+      .profile-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .profile-sidebar-card {
+        position: static;
+      }
+      .profile-info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="profile-page-wrap">
+      <div class="profile-layout-grid">
+        <!-- SIDEBAR -->
+        <div class="profile-sidebar-card">
+          <div class="profile-avatar-wrap">
+            <img id="sideAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop" alt="Avatar" class="profile-avatar-img">
+          </div>
+          <div class="profile-user-name" id="sideUserName">Budi Santoso</div>
+          <div class="profile-user-email" id="sideUserEmail">budi@gadget.id</div>
+          <span class="profile-tier-badge" id="sideUserTier">VIP Gold Member</span>
+
+          <ul class="profile-nav-list">
+            <li>
+              <button class="p-nav-btn active" id="btnTabOverview" onclick="switchProfileTab('overview')">
+                <span class="icon">👤</span> Profil Saya
+              </button>
+            </li>
+            <li>
+              <button class="p-nav-btn" id="btnTabEdit" onclick="switchProfileTab('edit')">
+                <span class="icon">✏️</span> Edit Profil
+              </button>
+            </li>
+            <li>
+              <button class="p-nav-btn" id="btnTabPassword" onclick="switchProfileTab('password')">
+                <span class="icon">🔒</span> Ganti Kata Sandi
+              </button>
+            </li>
+            <li>
+              <button class="p-nav-btn" id="btnTabOrders" onclick="switchProfileTab('orders')">
+                <span class="icon">📦</span> Riwayat Pesanan
+              </button>
+            </li>
+            <li style="margin-top:1rem;border-top:1px solid var(--gray-200);padding-top:1rem;">
+              <button class="p-nav-btn" onclick="logoutUser()" style="color:#EF4444;">
+                <span class="icon">🚪</span> Keluar (Logout)
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- MAIN CONTENT PANEL -->
+        <div class="profile-content-panel">
+          <!-- ==========================================
+               TAB 1: OVERVIEW (MY PROFILE)
+               ========================================== -->
+          <div id="panelOverview">
+            <div class="panel-heading-row">
+              <h2>Profil Pengguna</h2>
+              <button class="btn-sub-cta" style="color:var(--red);border-color:var(--red);padding:8px 18px;font-size:0.88rem;" onclick="switchProfileTab('edit')">
+                ✏️ Edit Data
+              </button>
+            </div>
+
+            <!-- STAT WIDGETS -->
+            <div class="stats-widget-grid">
+              <div class="stat-widget-box">
+                <div class="stat-icon">📦</div>
+                <div>
+                  <div class="stat-val" id="statOrdersCount">2</div>
+                  <div class="stat-lbl">Total Pesanan</div>
+                </div>
+              </div>
+              <div class="stat-widget-box">
+                <div class="stat-icon">❤️</div>
+                <div>
+                  <div class="stat-val" id="statWishlistCount">2</div>
+                  <div class="stat-lbl">Wishlist Favorit</div>
+                </div>
+              </div>
+              <div class="stat-widget-box">
+                <div class="stat-icon">🛒</div>
+                <div>
+                  <div class="stat-val" id="statCartCount">0</div>
+                  <div class="stat-lbl">Di Keranjang</div>
+                </div>
+              </div>
+              <div class="stat-widget-box">
+                <div class="stat-icon">🎟️</div>
+                <div>
+                  <div class="stat-val">3</div>
+                  <div class="stat-lbl">Voucher Aktif</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PERSONAL DATA -->
+            <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:1rem;">Informasi Pribadi &amp; Kontak</h3>
+            <div class="profile-info-grid">
+              <div class="info-card-item">
+                <div class="info-card-label">Nama Lengkap</div>
+                <div class="info-card-val" id="ovName">Budi Santoso</div>
+              </div>
+              <div class="info-card-item">
+                <div class="info-card-label">Alamat Email</div>
+                <div class="info-card-val" id="ovEmail">budi@gadget.id</div>
+              </div>
+              <div class="info-card-item">
+                <div class="info-card-label">Nomor WhatsApp / HP</div>
+                <div class="info-card-val" id="ovPhone">081234567890</div>
+              </div>
+              <div class="info-card-item">
+                <div class="info-card-label">Jenis Kelamin</div>
+                <div class="info-card-val" id="ovGender">Laki-laki</div>
+              </div>
+              <div class="info-card-item" style="grid-column: 1 / -1;">
+                <div class="info-card-label">Alamat Utama Pengiriman</div>
+                <div class="info-card-val" id="ovAddress">Jl. Jenderal Sudirman No. 45, Kebayoran Baru, Jakarta Selatan, DKI Jakarta 12190</div>
+              </div>
+            </div>
+
+            <!-- RECENT ORDERS SNAPSHOT -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+              <h3 style="font-size:1.15rem;font-weight:700;">Pesanan Terakhir Anda</h3>
+              <a href="javascript:void(0)" onclick="switchProfileTab('orders')" style="color:var(--red);font-weight:700;font-size:0.88rem;text-decoration:none;">Lihat Semua →</a>
+            </div>
+            <div id="overviewRecentOrderBox"></div>
+          </div>
+
+          <!-- ==========================================
+               TAB 2: EDIT PROFILE
+               ========================================== -->
+          <div id="panelEdit" style="display:none;">
+            <div class="panel-heading-row">
+              <h2>Edit Profil Pengguna</h2>
+              <button class="btn-detail-link" style="padding:8px 16px;font-size:0.85rem;" onclick="switchProfileTab('overview')">
+                ← Kembali ke Ringkasan
+              </button>
+            </div>
+
+            <form id="editProfileForm" onsubmit="handleSaveProfile(event)">
+              <!-- AVATAR PICKER -->
+              <div class="form-group" style="margin-bottom:2rem;">
+                <label class="form-label">Pilih Foto Avatar Profil:</label>
+                <div class="avatar-presets-row" id="avatarPresets"></div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="epName">Nama Lengkap <span>*</span></label>
+                  <input type="text" id="epName" class="form-input" required minlength="3">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="epEmail">Alamat Email <span>*</span></label>
+                  <input type="email" id="epEmail" class="form-input" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="epPhone">Nomor WhatsApp / HP <span>*</span></label>
+                  <input type="tel" id="epPhone" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="epGender">Jenis Kelamin</label>
+                  <select id="epGender" class="form-input">
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="epAddress">Alamat Lengkap Rumah / Kantor <span>*</span></label>
+                <textarea id="epAddress" class="form-input" rows="3" required style="resize:vertical;"></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="epCity">Kota / Kabupaten <span>*</span></label>
+                  <input type="text" id="epCity" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="epProvince">Provinsi <span>*</span></label>
+                  <input type="text" id="epProvince" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="epPostal">Kode Pos</label>
+                  <input type="text" id="epPostal" class="form-input">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-submit-auth" style="margin-top:1.5rem;max-width:280px;">
+                💾 Simpan Perubahan Profil
+              </button>
+            </form>
+          </div>
+
+          <!-- ==========================================
+               TAB 3: CHANGE PASSWORD
+               ========================================== -->
+          <div id="panelPassword" style="display:none;">
+            <div class="panel-heading-row">
+              <h2>Ubah Kata Sandi</h2>
+            </div>
+
+            <p style="color:var(--gray-600);font-size:0.92rem;margin-bottom:2rem;line-height:1.6;">
+              Untuk menjaga keamanan akun Anda, ganti kata sandi secara berkala. Pastikan kata sandi baru minimal 6 karakter.
+            </p>
+
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event)" style="max-width:480px;">
+              <div class="form-group">
+                <label class="form-label" for="cpOld">Kata Sandi Saat Ini <span>*</span></label>
+                <div class="input-password-wrap">
+                  <input type="password" id="cpOld" class="form-input" placeholder="Masukkan kata sandi lama" required>
+                  <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('cpOld', this)">👁️</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="cpNew">Kata Sandi Baru <span>*</span></label>
+                <div class="input-password-wrap">
+                  <input type="password" id="cpNew" class="form-input" placeholder="Minimal 6 karakter" required minlength="6">
+                  <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('cpNew', this)">👁️</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="cpConfirm">Konfirmasi Kata Sandi Baru <span>*</span></label>
+                <div class="input-password-wrap">
+                  <input type="password" id="cpConfirm" class="form-input" placeholder="Ulangi kata sandi baru" required minlength="6">
+                  <button type="button" class="pw-toggle-btn" onclick="togglePasswordVisibility('cpConfirm', this)">👁️</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-submit-auth">
+                🔒 Perbarui Kata Sandi
+              </button>
+            </form>
+          </div>
+
+          <!-- ==========================================
+               TAB 4: ORDERS
+               ========================================== -->
+          <div id="panelOrders" style="display:none;">
+            <div class="panel-heading-row">
+              <h2>Riwayat Pesanan Saya</h2>
+            </div>
+
+            <div id="ordersListContainer">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('profile');
+    renderNavbar('profile');
+    renderFooter();
+
+    const PRESET_AVATARS = [
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
+      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop'
+    ];
+    let selectedAvatar = PRESET_AVATARS[0];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProfileData();
+
+      // Check URL query for tab
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam) {
+        switchProfileTab(tabParam);
+      }
+    });
+
+    function loadProfileData() {
+      const user = getCurrentUser() || DEFAULT_USER;
+
+      // Sidebar
+      document.getElementById('sideAvatar').src = user.avatar;
+      document.getElementById('sideUserName').textContent = user.name;
+      document.getElementById('sideUserEmail').textContent = user.email;
+      document.getElementById('sideUserTier').textContent = user.memberTier || 'VIP Member';
+
+      // Stats
+      document.getElementById('statOrdersCount').textContent = getOrders().length;
+      document.getElementById('statWishlistCount').textContent = getWishlistCount();
+      document.getElementById('statCartCount').textContent = getCartCount();
+
+      // Overview Tab
+      document.getElementById('ovName').textContent = user.name;
+      document.getElementById('ovEmail').textContent = user.email;
+      document.getElementById('ovPhone').textContent = user.phone || '-';
+      document.getElementById('ovGender').textContent = user.gender || '-';
+      document.getElementById('ovAddress').textContent = `${user.address || ''}, ${user.city || ''}, ${user.province || ''} ${user.postalCode || ''}`;
+
+      // Edit Form
+      document.getElementById('epName').value = user.name;
+      document.getElementById('epEmail').value = user.email;
+      document.getElementById('epPhone').value = user.phone || '';
+      document.getElementById('epGender').value = user.gender || 'Laki-laki';
+      document.getElementById('epAddress').value = user.address || '';
+      document.getElementById('epCity').value = user.city || '';
+      document.getElementById('epProvince').value = user.province || '';
+      document.getElementById('epPostal').value = user.postalCode || '';
+
+      selectedAvatar = user.avatar;
+      renderAvatarPresets();
+      renderOrdersList();
+      renderRecentOrderOverview();
+    }
+
+    function renderAvatarPresets() {
+      const container = document.getElementById('avatarPresets');
+      container.innerHTML = PRESET_AVATARS.map(src => `
+        <div class="preset-avatar-option ${src === selectedAvatar ? 'selected' : ''}" onclick="pickAvatar('${src}', this)">
+          <img src="${src}" alt="Preset">
+        </div>
+      `).join('');
+    }
+
+    function pickAvatar(src, el) {
+      selectedAvatar = src;
+      document.querySelectorAll('.preset-avatar-option').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function switchProfileTab(tab) {
+      ['overview', 'edit', 'password', 'orders'].forEach(t => {
+        const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
+        const btn = document.getElementById('btnTab' + t.charAt(0).toUpperCase() + t.slice(1));
+        if (panel) panel.style.display = (t === tab) ? 'block' : 'none';
+        if (btn) btn.classList.toggle('active', t === tab);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    function handleSaveProfile(e) {
+      e.preventDefault();
+
+      const updated = {
+        name: document.getElementById('epName').value.trim(),
+        email: document.getElementById('epEmail').value.trim(),
+        phone: document.getElementById('epPhone').value.trim(),
+        gender: document.getElementById('epGender').value,
+        address: document.getElementById('epAddress').value.trim(),
+        city: document.getElementById('epCity').value.trim(),
+        province: document.getElementById('epProvince').value.trim(),
+        postalCode: document.getElementById('epPostal').value.trim(),
+        avatar: selectedAvatar
+      };
+
+      updateUserProfile(updated);
+      showToast('✅', 'Profil Anda berhasil diperbarui!');
+      loadProfileData();
+      switchProfileTab('overview');
+    }
+
+    function handleChangePassword(e) {
+      e.preventDefault();
+      const oldP = document.getElementById('cpOld').value;
+      const newP = document.getElementById('cpNew').value;
+      const confP = document.getElementById('cpConfirm').value;
+
+      if (newP !== confP) {
+        showToast('⚠️', 'Konfirmasi kata sandi baru tidak sesuai!');
+        return;
+      }
+
+      const res = changeUserPassword(oldP, newP);
+      if (res.success) {
+        showToast('✅', res.message);
+        document.getElementById('changePasswordForm').reset();
+        setTimeout(() => {
+          switchProfileTab('overview');
+        }, 1200);
+      } else {
+        showToast('⚠️', res.message);
+      }
+    }
+
+    function renderOrdersList() {
+      const orders = getOrders();
+      const container = document.getElementById('ordersListContainer');
+
+      if (!orders.length) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:3rem 1rem;color:var(--gray-400);">
+            <div style="font-size:3.5rem;margin-bottom:1rem;">📦</div>
+            <h3>Belum Ada Riwayat Pesanan</h3>
+            <p>Anda belum pernah melakukan pemesanan gadget di Gadget.Id.</p>
+            <a href="home.html" class="btn-main-cta" style="background:var(--red);color:#fff;display:inline-flex;margin-top:1rem;">Mulai Belanja Sekarang</a>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map(ord => `
+        <div class="order-card-box">
+          <div class="order-card-header">
+            <div>
+              <span style="font-weight:800;color:var(--black);">${ord.id}</span>
+              <span style="color:var(--gray-400);margin:0 6px;">·</span>
+              <span style="color:var(--gray-600);font-size:0.85rem;">${ord.date}</span>
+            </div>
+            <span class="order-status-badge" style="background:${ord.statusColor}22;color:${ord.statusColor};">
+              ● ${ord.status}
+            </span>
+          </div>
+          <div class="order-card-body">
+            ${(ord.items || []).map(i => `
+              <div class="order-item-line">
+                <img src="${i.img}" alt="${i.name}" class="order-item-thumb" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=60&h=60&fit=crop'">
+                <div style="flex:1;">
+                  <div style="font-weight:700;font-size:0.95rem;">${i.name}</div>
+                  <div style="font-size:0.8rem;color:var(--gray-400);">${i.variantLabel || ''} · x${i.qty}</div>
+                </div>
+                <div style="font-weight:700;color:var(--red);">${formatRp(i.price * i.qty)}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="order-card-footer">
+            <div style="font-size:0.85rem;color:var(--gray-600);">
+              Metode: <strong>${ord.paymentMethod}</strong>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:0.85rem;color:var(--gray-400);">Total Belanja: </span>
+              <span style="font-size:1.15rem;font-weight:800;color:var(--red);font-family:'Plus Jakarta Sans',sans-serif;">${formatRp(ord.total)}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecentOrderOverview() {
+      const orders = getOrders();
+      const box = document.getElementById('overviewRecentOrderBox');
+      if (!orders.length) {
+        box.innerHTML = '<p style="color:var(--gray-400);font-size:0.9rem;">Belum ada riwayat pesanan.</p>';
+        return;
+      }
+      const ord = orders[0];
+      box.innerHTML = `
+        <div class="order-card-box" style="margin-bottom:0;">
+          <div class="order-card-header">
+            <div>
+              <strong>${ord.id}</strong> · <span style="font-size:0.85rem;color:var(--gray-600);">${ord.date}</span>
+            </div>
+            <span class="order-status-badge" style="background:${ord.statusColor}22;color:${ord.statusColor};">
+              ● ${ord.status}
+            </span>
+          </div>
+          <div class="order-card-body" style="padding:1rem 1.4rem;">
+            ${(ord.items || []).slice(0, 1).map(i => `
+              <div class="order-item-line" style="margin-bottom:0;">
+                <img src="${i.img}" alt="${i.name}" class="order-item-thumb" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=60&h=60&fit=crop'">
+                <div style="flex:1;">
+                  <div style="font-weight:700;font-size:0.92rem;">${i.name}</div>
+                  <div style="font-size:0.8rem;color:var(--gray-400);">${i.variantLabel || ''} · x${i.qty}</div>
+                </div>
+                <div style="font-weight:700;color:var(--red);">${formatRp(i.price * i.qty)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Belanja - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .cart-page-wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem;
+    }
+    .cart-title-row {
+      margin-bottom: 1.8rem;
+    }
+    .cart-title-row h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 0.3rem;
+    }
+    .cart-title-row p {
+      color: var(--gray-400);
+      font-size: 0.95rem;
+    }
+
+    /* Free shipping meter */
+    .free-shipping-card {
+      background: linear-gradient(90deg, #F0FDF4 0%, #E8F5E9 100%);
+      border: 1.5px dashed #4CAF50;
+      border-radius: 16px;
+      padding: 1.2rem 1.6rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .fs-icon {
+      font-size: 2.2rem;
+    }
+    .fs-info {
+      flex: 1;
+    }
+    .fs-info strong {
+      color: #2E7D32;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .fs-progress-bg {
+      height: 8px;
+      background: #C8E6C9;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .fs-progress-bar {
+      height: 100%;
+      background: #2E7D32;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    /* 2 Column Cart Layout */
+    .cart-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* Items Container */
+    .cart-items-panel {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .cart-panel-header {
+      padding: 1.2rem 1.6rem;
+      background: var(--gray-50);
+      border-bottom: 1.5px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .cart-row-item {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.4rem 1.6rem;
+      border-bottom: 1px solid var(--gray-100);
+      transition: background 0.15s;
+    }
+    .cart-row-item:last-child {
+      border-bottom: none;
+    }
+    .cart-row-item:hover {
+      background: #FAFAFA;
+    }
+    .cart-img-box {
+      width: 76px;
+      height: 76px;
+      background: var(--gray-100);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+    .cart-img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .cart-info-box {
+      flex: 1;
+    }
+    .cart-brand-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cart-item-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--black);
+      margin: 2px 0 4px;
+    }
+    .cart-variant-tag {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+    }
+    .cart-unit-price {
+      color: var(--gray-600);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+    .cart-qty-ctrl-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .cart-subtotal-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-width: 120px;
+      text-align: right;
+    }
+    .cart-panel-footer {
+      padding: 1.2rem 1.6rem;
+      background: var(--gray-50);
+      border-top: 1.5px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Summary Card */
+    .cart-summary-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 1.8rem;
+      position: sticky;
+      top: 90px;
+    }
+    .summary-card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+
+    /* Coupon box */
+    .coupon-wrap {
+      margin-bottom: 1.5rem;
+    }
+    .coupon-input-group {
+      display: flex;
+      gap: 8px;
+    }
+    .coupon-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .coupon-input:focus {
+      border-color: var(--red);
+    }
+    .btn-apply-coupon {
+      background: var(--black);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-apply-coupon:hover {
+      background: #333;
+    }
+    .applied-coupon-pill {
+      margin-top: 8px;
+      background: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #A5D6A7;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-remove-coupon {
+      background: none;
+      border: none;
+      color: #C62828;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .summary-calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+      color: var(--gray-600);
+    }
+    .summary-calc-row.total-row {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      border-top: 1.5px solid var(--gray-200);
+      padding-top: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn-proceed-checkout {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.25);
+    }
+    .btn-proceed-checkout:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+    .secure-checkout-hint {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      margin-top: 1rem;
+    }
+
+    /* EMPTY CART */
+    .empty-cart-page {
+      text-align: center;
+      padding: 5rem 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .empty-cart-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      color: var(--gray-400);
+    }
+    .empty-cart-page h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+    .empty-cart-page p {
+      color: var(--gray-400);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .cart-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .cart-summary-card {
+        position: static;
+      }
+      .cart-row-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .cart-qty-ctrl-row {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="cart-page-wrap">
+      <div class="cart-title-row">
+        <h1>🛒 Keranjang Belanja</h1>
+        <p id="cartItemsSubtitle">Periksa barang belanjaan Anda sebelum melanjutkan ke proses checkout</p>
+      </div>
+
+      <!-- FREE SHIPPING PROGRESS -->
+      <div class="free-shipping-card" id="freeShippingBanner">
+        <div class="fs-icon">🚚</div>
+        <div class="fs-info">
+          <strong id="fsStatusText">Gratis Ongkos Kirim se-Indonesia</strong>
+          <div style="font-size:0.85rem;color:#4B5563;" id="fsSubText">Minimal belanja Rp 500.000 untuk menikmati subsidi bebas ongkir.</div>
+          <div class="fs-progress-bg">
+            <div class="fs-progress-bar" id="fsProgressBar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CART VIEW OR EMPTY -->
+      <div id="cartViewContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('cart');
+    renderNavbar('cart');
+    renderFooter();
+
+    let discountAmount = 0;
+    let appliedCouponCode = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCartPage();
+    });
+
+    function renderCartPage() {
+      const cart = getCart();
+      const container = document.getElementById('cartViewContainer');
+      const subtitle = document.getElementById('cartItemsSubtitle');
+
+      if (!cart.length) {
+        subtitle.textContent = 'Keranjang belanja Anda saat ini masih kosong.';
+        updateShippingMeter(0);
+        container.innerHTML = `
+          <div class="empty-cart-page">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>Keranjang Anda Kosong</h2>
+            <p>Sepertinya Anda belum memasukkan produk gadget apapun ke dalam keranjang belanja. Yuk cari gadget impian Anda sekarang!</p>
+            <a href="home.html" class="btn-main-cta" style="background:var(--red);color:#fff;display:inline-flex;">
+              Mulai Belanja di Halaman Utama →
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+      const subtotal = getCartTotal();
+      subtitle.textContent = `Terdapat ${totalItems} item produk di dalam keranjang belanja Anda`;
+      updateShippingMeter(subtotal);
+
+      const finalTotal = Math.max(0, subtotal - discountAmount);
+
+      container.innerHTML = `
+        <div class="cart-main-grid">
+          <!-- ITEMS LIST -->
+          <div>
+            <div class="cart-items-panel">
+              <div class="cart-panel-header">
+                <span>Daftar Produk (${totalItems} item)</span>
+                <span>Subtotal</span>
+              </div>
+              <div>
+                ${cart.map(item => `
+                  <div class="cart-row-item">
+                    <div class="cart-img-box">
+                      <img src="${item.img}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100&h=100&fit=crop'">
+                    </div>
+                    <div class="cart-info-box">
+                      <div class="cart-brand-tag">${item.brand}</div>
+                      <div class="cart-item-title">${item.name}</div>
+                      <div class="cart-variant-tag">${item.variantLabel || 'Standard'}</div>
+                      <div class="cart-unit-price">${formatRp(item.price)} / unit</div>
+                    </div>
+                    <div class="cart-qty-ctrl-row">
+                      <div class="qty-picker">
+                        <button type="button" class="qty-picker-btn" onclick="handleCartQty('${item.cartKey}', -1)">−</button>
+                        <span class="qty-picker-val">${item.qty}</span>
+                        <button type="button" class="qty-picker-btn" onclick="handleCartQty('${item.cartKey}', 1)">+</button>
+                      </div>
+                      <div class="cart-subtotal-price">${formatRp(item.price * item.qty)}</div>
+                      <button class="cart-item-remove" onclick="handleCartRemove('${item.cartKey}')" title="Hapus produk">🗑</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="cart-panel-footer">
+                <a href="home.html" class="btn-detail-link" style="display:inline-flex;padding:8px 18px;">← Tambah Belanja Lagi</a>
+                <button onclick="handleClearCart()" class="btn-bulk-clear" style="padding:8px 16px;">Kosongkan Keranjang</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUMMARY CARD -->
+          <div>
+            <div class="cart-summary-card">
+              <div class="summary-card-title">Ringkasan Pesanan</div>
+
+              <!-- COUPON INPUT -->
+              <div class="coupon-wrap">
+                <div style="font-size:0.85rem;font-weight:700;color:var(--gray-600);margin-bottom:6px;">Punya Kode Promo?</div>
+                <div class="coupon-input-group">
+                  <input type="text" id="couponInput" class="coupon-input" placeholder="Ketik kode promo" value="${appliedCouponCode || ''}">
+                  <button type="button" class="btn-apply-coupon" onclick="applyCoupon()">Gunakan</button>
+                </div>
+                <div style="font-size:0.75rem;color:var(--gray-400);margin-top:4px;">Gunakan kode: <strong>GADGETHEMAT10</strong> atau <strong>NEWUSER</strong></div>
+                ${appliedCouponCode ? `
+                  <div class="applied-coupon-pill">
+                    <span>🎟️ Kupon "${appliedCouponCode}" Aktif</span>
+                    <button class="btn-remove-coupon" onclick="removeCoupon()">✕</button>
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- CALCULATION ROWS -->
+              <div class="summary-calc-row">
+                <span>Subtotal Produk</span>
+                <span style="font-weight:600;color:var(--black);">${formatRp(subtotal)}</span>
+              </div>
+              <div class="summary-calc-row">
+                <span>Diskon Kupon Promo</span>
+                <span style="color:#10B981;font-weight:700;">-${formatRp(discountAmount)}</span>
+              </div>
+              <div class="summary-calc-row">
+                <span>Ongkos Kirim</span>
+                <span style="color:#10B981;font-weight:700;">GRATIS (Promo)</span>
+              </div>
+              <div class="summary-calc-row total-row">
+                <span>Total Belanja</span>
+                <span>${formatRp(finalTotal)}</span>
+              </div>
+
+              <a href="checkout.html" class="btn-proceed-checkout">
+                Lanjut ke Checkout →
+              </a>
+
+              <div class="secure-checkout-hint">
+                🔒 Pembayaran Dijamin Aman, Bergaransi &amp; Bebas Resiko
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateShippingMeter(subtotal) {
+      const bar = document.getElementById('fsProgressBar');
+      const text = document.getElementById('fsStatusText');
+      const sub = document.getElementById('fsSubText');
+
+      const target = 500000;
+      if (subtotal >= target) {
+        bar.style.width = '100%';
+        text.innerHTML = '🎉 Selamat! Anda Berhak Mendapatkan Gratis Ongkir se-Indonesia!';
+        sub.textContent = 'Subsidi ongkos kirim resmi otomatis diterapkan pada pesanan Anda.';
+      } else {
+        const percent = Math.min(100, Math.round((subtotal / target) * 100));
+        bar.style.width = percent + '%';
+        const diff = target - subtotal;
+        text.innerHTML = `Tambah belanja <strong>${formatRp(diff)}</strong> lagi untuk Gratis Ongkir!`;
+        sub.textContent = 'Bebas biaya ongkos kirim ke seluruh nusantara dengan minimal belanja Rp 500.000.';
+      }
+    }
+
+    function handleCartQty(key, delta) {
+      updateCartQty(key, delta);
+      renderCartPage();
+    }
+
+    function handleCartRemove(key) {
+      removeFromCart(key);
+      renderCartPage();
+    }
+
+    function handleClearCart() {
+      if (confirm('Kosongkan seluruh produk dari keranjang belanja Anda?')) {
+        saveCart([]);
+        renderCartPage();
+        showToast('🗑', 'Keranjang belanja telah dikosongkan.');
+      }
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      const subtotal = getCartTotal();
+
+      if (!code) {
+        showToast('⚠️', 'Silakan masukkan kode kupon terlebih dahulu.');
+        return;
+      }
+
+      if (code === 'GADGETHEMAT10') {
+        discountAmount = Math.min(500000, Math.round(subtotal * 0.10));
+        appliedCouponCode = code;
+        showToast('🎟️', 'Kupon GADGETHEMAT10 berhasil diterapkan! Diskon: ' + formatRp(discountAmount));
+      } else if (code === 'NEWUSER') {
+        discountAmount = 100000;
+        appliedCouponCode = code;
+        showToast('🎟️', 'Kupon NEWUSER berhasil diterapkan! Diskon: Rp 100.000');
+      } else if (code === 'ONGKIRGRATIS') {
+        discountAmount = 0;
+        appliedCouponCode = code;
+        showToast('🎟️', 'Voucher Gratis Ongkir Aktif untuk semua ekspedisi!');
+      } else {
+        showToast('⚠️', 'Kode promo tidak valid atau telah kedaluwarsa.');
+        return;
+      }
+
+      renderCartPage();
+    }
+
+    function removeCoupon() {
+      discountAmount = 0;
+      appliedCouponCode = null;
+      showToast('ℹ️', 'Kupon promo dilepas.');
+      renderCartPage();
+    }
+  </script>
+</body>
+</html>

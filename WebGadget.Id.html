@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gadget.Id - Halaman Utama & Katalog Produk Lengkap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <script src="shared.js"></script>
+  <style>
+    .catalog-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sort-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gray-600);
+    }
+    .sort-select {
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--black);
+      outline: none;
+      cursor: pointer;
+    }
+    .sort-select:focus {
+      border-color: var(--red);
+    }
+    .catalog-count-info {
+      font-size: 0.9rem;
+      color: var(--gray-400);
+    }
+    .catalog-count-info strong {
+      color: var(--black);
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  
+
+  <main class="page-main-container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <div class="hero-badge">📱 Official Reseller Terpercaya #1</div>
+        <h1>Produk Terbaik,<br>Harga Terjangkau</h1>
+        <p>iPhone, Samsung, AirPods, dan Aksesoris Original. Bergaransi resmi, pengiriman cepat dan aman ke seluruh Indonesia.</p>
+        <div class="hero-btns">
+          <button class="btn-white" onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Belanja Sekarang</button>
+          <a href="product-detail.html?id=8" class="btn-outline-white" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">Detail iPhone 17 Pro &rarr;</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-showcase-container" onclick="window.location.href='product-detail.html?id=8'" title="Klik untuk Lihat Detail &amp; Spesifikasi iPhone 17 Pro">
+          <!-- Ambient Lighting Glow Backdrop -->
+          <div class="hero-ambient-glow"></div>
+          
+          <!-- Floating Spec Pill 1 (Top Left): Chip & Generation -->
+          <div class="hero-float-card card-top-left">
+            <div class="float-card-icon">⚡</div>
+            <div class="float-card-text">
+              <span class="float-card-title">A19 Pro Chip</span>
+              <span class="float-card-sub">Next-Gen 3nm Architecture</span>
+            </div>
+          </div>
+
+          <!-- Phone Device Frame -->
+          <div class="hero-device-wrapper">
+            <div class="hero-phone-frame">
+              <img id="heroPhoneImg" alt="iPhone 17 Pro" class="hero-phone-img" src="" onerror="this.src='https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=300&amp;h=400&amp;fit=crop'">
+            </div>
+            <script>
+              (function() {
+                if (typeof products !== 'undefined') {
+                  const p17 = products.find(p => p.id === 8);
+                  if (p17) {
+                    const el = document.getElementById('heroPhoneImg');
+                    if (el) el.src = p17.img;
+                  }
+                }
+              })();
+            </script>
+            <div class="hero-phone-reflection"></div>
+          </div>
+
+          <!-- Floating Spec Pill 2 (Top Right): Model & Price -->
+          <div class="hero-float-card card-top-right">
+            <div class="float-card-pill">🔥 Flagship Terbaru</div>
+            <div class="float-card-name">iPhone 17 Pro</div>
+            <div class="float-card-price">Rp 23.999.000</div>
+          </div>
+
+          <!-- Floating Spec Pill 3 (Bottom Right): Warranty & Origin -->
+          <div class="hero-float-card card-bottom-right">
+            <div class="float-card-icon">🛡️</div>
+            <div class="float-card-text">
+              <span class="float-card-title">Garansi Resmi 1 Thn</span>
+              <span class="float-card-sub">100% Original Apple ID</span>
+            </div>
+          </div>
+
+          <!-- Bottom Micro Spec Bar: Color Options & Specs -->
+          <div class="hero-showcase-footer">
+            <div class="hero-color-dots" title="Pilihan Warna Resmi: Cosmic Orange, Deep Blue, Silver">
+              <span class="hero-color-label">Warna:</span>
+              <span class="color-dot dot-orange" title="Cosmic Orange"></span>
+              <span class="color-dot dot-blue" title="Deep Blue"></span>
+              <span class="color-dot dot-silver" title="Silver"></span>
+            </div>
+            <div class="hero-spec-tag">12GB RAM · Titanium Grade 5</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BAR -->
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍  Cari produk (iPhone 16, Samsung S25, AirPods, GaN Charger...)" oninput="filterProducts()">
+      <button class="btn-quick-add" style="padding:12px 24px;border-radius:50px;font-size:0.95rem;" onclick="filterProducts()">Cari Produk</button>
+      <span class="search-tag" id="searchTag"></span>
+    </div>
+
+    <!-- CATEGORIES -->
+    <section class="section" id="categories">
+      <div class="title-accent"></div>
+      <h2 class="section-title">Kategori Produk</h2>
+      <p class="section-sub">Temukan gadget &amp; aksesoris terbaik pilihan Anda</p>
+      <div class="cat-grid">
+        <div class="cat-card active" onclick="setCategory('all', this)">
+          <div class="cat-icon">📱</div>
+          <div class="cat-name">Semua</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('iphone', this)">
+          <div class="cat-icon">🍎</div>
+          <div class="cat-name">iPhone</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('samsung', this)">
+          <div class="cat-icon">📲</div>
+          <div class="cat-name">Samsung</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('airpods', this)">
+          <div class="cat-icon">🎧</div>
+          <div class="cat-name">AirPods</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('powerbank', this)">
+          <div class="cat-icon">🔋</div>
+          <div class="cat-name">Powerbank</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('kabel', this)">
+          <div class="cat-icon">🔌</div>
+          <div class="cat-name">Kabel Charger</div>
+        </div>
+        <div class="cat-card" onclick="setCategory('charger', this)">
+          <div class="cat-icon">⚡</div>
+          <div class="cat-name">Kepala Charger</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products-section" id="productsSection">
+      <div class="title-accent"></div>
+      <h2 class="section-title">Katalog Produk Unggulan</h2>
+      <p class="section-sub">Stok terlengkap, jaminan harga bersaing, garansi resmi distributor 1 tahun</p>
+
+      <div class="catalog-controls">
+        <div class="filter-bar" id="filterBar" style="margin-bottom:0;">
+          <button class="filter-btn active" onclick="setFilter('all', this)">Semua</button>
+          <button class="filter-btn" onclick="setFilter('iphone', this)">iPhone</button>
+          <button class="filter-btn" onclick="setFilter('samsung', this)">Samsung</button>
+          <button class="filter-btn" onclick="setFilter('airpods', this)">AirPods</button>
+          <button class="filter-btn" onclick="setFilter('powerbank', this)">Powerbank</button>
+          <button class="filter-btn" onclick="setFilter('kabel', this)">Kabel Charger</button>
+          <button class="filter-btn" onclick="setFilter('charger', this)">Kepala Charger</button>
+        </div>
+
+        <div class="sort-wrap">
+          <span class="sort-label">Urutkan:</span>
+          <select class="sort-select" id="sortSelect" onchange="sortProducts(this.value)">
+            <option value="default">Rekomendasi</option>
+            <option value="price-low">Harga: Rendah ke Tinggi</option>
+            <option value="price-high">Harga: Tinggi ke Rendah</option>
+            <option value="name-az">Nama: A - Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="catalog-count-info" id="productCountInfo" style="margin-bottom:1.5rem;">
+        Menampilkan <strong>31</strong> produk
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- CART SIDEBAR PREVIEW OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCartSidebar()"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>🛒 Keranjang Belanja</h2>
+      <button class="close-btn" onclick="closeCartSidebar()">✕</button>
+    </div>
+    <div class="cart-items" id="sidebarCartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="cart-total-label">Total Pembayaran</span>
+        <span class="cart-total-val" id="sidebarCartTotal">Rp 0</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <a href="cart.html" class="btn-detail-link" style="text-align:center;">Buka Keranjang</a>
+        <a href="checkout.html" class="checkout-btn" style="text-align:center;text-decoration:none;padding:12px;">Checkout →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- VARIANT QUICK MODAL -->
+  <div class="modal-overlay" id="variantModal" onclick="handleModalOverlayClick(event)">
+    <div class="modal-box" id="variantBox">
+      <div class="modal-header">
+        <img id="mImg" src="" alt="Produk">
+        <div class="modal-header-info">
+          <div class="modal-header-name" id="mName">Nama Produk</div>
+          <div class="modal-header-price" id="mPrice">Rp 0</div>
+        </div>
+        <button class="modal-close" onclick="closeVariantModal()">✕</button>
+      </div>
+      <div class="modal-body" id="mBody"></div>
+      <div class="modal-footer">
+        <button class="modal-add-btn" onclick="confirmAddToCart()">🛒 Tambah ke Keranjang</button>
+        <div class="price-note" id="mPriceNote"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    // Auth Protection: Require Login to access Home & Catalog
+    checkAuthProtection('home');
+    let currentFilter = 'all';
+    let currentSort = 'default';
+    let activeProduct = null;
+    let selectedStorage = null;
+    let selectedColor = null;
+
+    // Initialize Navbar & Footer
+    renderNavbar('home');
+    renderFooter();
+
+    // Check URL parameters (e.g. ?cat=iphone or ?search=s25)
+    window.addEventListener('DOMContentLoaded', () => {
+      // Ensure Hero Phone Image is iPhone 17 Pro
+      const p17 = typeof products !== 'undefined' ? products.find(p => p.id === 8) : null;
+      if (p17) {
+        const el = document.getElementById('heroPhoneImg');
+        if (el && (!el.src || el.src === window.location.href)) el.src = p17.img;
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      const searchParam = urlParams.get('search');
+
+      if (catParam) {
+        setFilter(catParam, document.querySelector(`.filter-btn[onclick*="${catParam}"]`));
+      } else if (searchParam) {
+        const input = document.getElementById('searchInput');
+        if (input) {
+          input.value = searchParam;
+          filterProducts();
+        }
+      } else {
+        renderProductsList(products);
+      }
+    });
+
+    function renderProductsList(list) {
+      const grid = document.getElementById('productsGrid');
+      const countInfo = document.getElementById('productCountInfo');
+      if (countInfo) {
+        countInfo.innerHTML = `Menampilkan <strong>${list.length}</strong> produk`;
+      }
+
+      if (!list.length) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align:center; padding: 4rem 1rem; color:var(--gray-400);">
+            <div style="font-size:3.5rem; margin-bottom:1rem;">🔍</div>
+            <h3 style="font-size:1.3rem; color:var(--black); margin-bottom:0.5rem;">Produk Tidak Ditemukan</h3>
+            <p style="font-size:0.95rem;">Maaf, tidak ada produk yang sesuai dengan filter atau kata kunci pencarian Anda.</p>
+            <button onclick="resetFilters()" class="btn-quick-add" style="margin-top:1.2rem; display:inline-block;">Tampilkan Semua Produk</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(p => {
+        const inWish = isInWishlist(p.id);
+        const specBadges = [];
+        if (p.ram) specBadges.push(`<span class="product-spec-tag">RAM ${p.ram}</span>`);
+        if (p.storage) specBadges.push(`<span class="product-spec-tag">${p.storage}</span>`);
+        const discountPct = p.oldPrice ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
+
+        return `
+          <div class="product-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
+            <button class="product-wish-btn ${inWish ? 'active' : ''}" onclick="handleWishlistClick(event, ${p.id})" title="${inWish ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}">
+              ${inWish ? '❤️' : '🤍'}
+            </button>
+            <div class="product-img-wrap">
+              <span class="product-badge">${p.badge || 'Official'}</span>
+              <img src="${p.img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop'">
+            </div>
+            <div class="product-info">
+              <div class="product-brand">${p.brand}</div>
+              <div class="product-name">${p.name}</div>
+              <div class="product-specs">${specBadges.join('')}</div>
+              <div class="product-rating-row">
+                <span class="product-rating-stars">★★★★★</span>
+                <span>4.9 (${p.reviewsCount || Math.floor(40 + p.id * 12)} ulasan)</span>
+              </div>
+              <div class="product-price-row">
+                <span class="product-price-current">${formatRp(p.price)}</span>
+                ${p.oldPrice ? `
+                  <span class="product-price-old">${formatRp(p.oldPrice)}</span>
+                  <span class="product-discount-pill">-${discountPct}%</span>
+                ` : ''}
+              </div>
+              <div class="product-card-actions" onclick="event.stopPropagation()">
+                <a href="product-detail.html?id=${p.id}" class="btn-detail-link">🔍 Detail</a>
+                <button class="btn-quick-add" onclick="openVariantModal(${p.id})">+ Keranjang</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleWishlistClick(e, id) {
+      e.stopPropagation();
+      const added = toggleWishlist(id);
+      const btn = e.currentTarget;
+      if (added) {
+        btn.classList.add('active');
+        btn.innerHTML = '❤️';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '🤍';
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      currentFilter = 'all';
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      const allBtn = document.querySelector('.filter-btn');
+      if (allBtn) allBtn.classList.add('active');
+      renderProductsList(products);
+    }
+
+    function setFilter(cat, el) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+      const catMatch = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
+      if (catMatch) catMatch.classList.add('active');
+
+      filterProducts();
+    }
+
+    function setCategory(cat, el) {
+      setFilter(cat, document.querySelector(`.filter-btn[onclick*="'${cat}'"]`));
+      document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterProducts() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      let filtered = products;
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(p => p.category === currentFilter);
+      }
+
+      if (q) {
+        filtered = filtered.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          (p.storage && p.storage.toLowerCase().includes(q))
+        );
+      }
+
+      // Sort
+      filtered = applySorting(filtered, currentSort);
+      renderProductsList(filtered);
+    }
+
+    function sortProducts(sortVal) {
+      currentSort = sortVal;
+      filterProducts();
+    }
+
+    function applySorting(arr, sortVal) {
+      const copy = [...arr];
+      if (sortVal === 'price-low') {
+        return copy.sort((a, b) => a.price - b.price);
+      } else if (sortVal === 'price-high') {
+        return copy.sort((a, b) => b.price - a.price);
+      } else if (sortVal === 'name-az') {
+        return copy.sort((a, b) => a.name.localeCompare(b.name));
+      }
+      return copy;
+    }
+
+    // ==========================================
+    // VARIANT MODAL FOR QUICK ADD
+    // ==========================================
+    function openVariantModal(productId) {
+      activeProduct = products.find(p => p.id === productId);
+      if (!activeProduct) return;
+
+      selectedStorage = activeProduct.storageOpts ? activeProduct.storageOpts[0] : (activeProduct.storage || null);
+      selectedColor = activeProduct.colors ? activeProduct.colors[0] : null;
+
+      document.getElementById('mImg').src = activeProduct.img;
+      document.getElementById('mName').textContent = activeProduct.name;
+      updateModalPrice();
+
+      let bodyHTML = '';
+      if (activeProduct.storageOpts && activeProduct.storageOpts.length > 1) {
+        bodyHTML += `<span class="variant-label">💾 Pilihan Kapasitas / Storage</span>
+          <div class="variant-chips" id="storageChips">
+            ${activeProduct.storageOpts.map(s => `
+              <div class="chip ${s === selectedStorage ? 'selected' : ''}" onclick="selectStorage('${s}')">
+                ${s} ${activeProduct.storagePrice && activeProduct.storagePrice[s] ? '+' + formatRp(activeProduct.storagePrice[s]) : ''}
+              </div>
+            `).join('')}
+          </div>`;
+      }
+
+      if (activeProduct.colors && activeProduct.colors.length > 0) {
+        bodyHTML += `<span class="variant-label">🎨 Pilihan Warna Resmi</span>
+          <div class="variant-chips" id="colorChips">
+            ${activeProduct.colors.map(c => `
+              <div class="chip color-chip ${c === selectedColor ? 'selected' : ''}" onclick="selectColor('${c}')">
+                <span class="color-dot" style="background:${colorMap[c] || '#888'}"></span>${c}
+              </div>
+            `).join('')}
+          </div>`;
+      }
+
+      if (!bodyHTML) {
+        bodyHTML = '<p style="color:var(--gray-600);font-size:0.95rem;">Produk ini adalah varian standar original.</p>';
+      }
+
+      document.getElementById('mBody').innerHTML = bodyHTML;
+      document.getElementById('variantModal').classList.add('open');
+    }
+
+    function selectStorage(s) {
+      selectedStorage = s;
+      document.querySelectorAll('#storageChips .chip').forEach(el => el.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      updateModalPrice();
+    }
+
+    function selectColor(c) {
+      selectedColor = c;
+      document.querySelectorAll('#colorChips .chip').forEach(el => el.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+    }
+
+    function updateModalPrice() {
+      if (!activeProduct) return;
+      let price = activeProduct.price;
+      if (activeProduct.storagePrice && activeProduct.storagePrice[selectedStorage]) {
+        price += activeProduct.storagePrice[selectedStorage];
+      }
+      document.getElementById('mPrice').textContent = formatRp(price);
+      document.getElementById('mPriceNote').textContent = selectedStorage ? `Harga tertera untuk varian: ${selectedStorage}` : '';
+    }
+
+    function closeVariantModal() {
+      document.getElementById('variantModal').classList.remove('open');
+      activeProduct = null;
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target.id === 'variantModal') closeVariantModal();
+    }
+
+    function confirmAddToCart() {
+      if (!activeProduct) return;
+      addToCart(activeProduct.id, {
+        color: selectedColor,
+        storage: selectedStorage,
+        qty: 1
+      });
+      closeVariantModal();
+      openCartSidebar();
+    }
+
+    // ==========================================
+    // SIDEBAR CART PREVIEW
+    // ==========================================
+    function openCartSidebar() {
+      updateSidebarCartUI();
+      document.getElementById('cartSidebar').classList.add('open');
+      document.getElementById('cartOverlay').classList.add('open');
+    }
+
+    function closeCartSidebar() {
+      document.getElementById('cartSidebar').classList.remove('open');
+      document.getElementById('cartOverlay').classList.remove('open');
+    }
+
+    function updateSidebarCartUI() {
+      const cart = getCart();
+      const container = document.getElementById('sidebarCartItems');
+      const totalEl = document.getElementById('sidebarCartTotal');
+      if (totalEl) totalEl.textContent = formatRp(getCartTotal());
+
+      if (!cart.length) {
+        container.innerHTML = `
+          <div class="empty-cart">
+            <div class="empty-icon">🛒</div>
+            <p style="font-weight:600;margin-bottom:8px">Keranjang Masih Kosong</p>
+            <p style="font-size:0.85rem;color:var(--gray-400)">Silakan tambahkan gadget pilihan Anda</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img">
+            <img src="${item.img}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=80&h=80&fit=crop'">
+          </div>
+          <div style="flex:1">
+            <div class="cart-item-name">${item.name}</div>
+            <div style="font-size:0.75rem;color:var(--gray-400);margin-bottom:4px;">${item.variantLabel || ''}</div>
+            <div class="cart-item-price">${formatRp(item.price)}</div>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="handleQtyChange('${item.cartKey}', -1)">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="handleQtyChange('${item.cartKey}', 1)">+</button>
+            </div>
+          </div>
+          <button class="cart-item-remove" onclick="handleRemoveCart('${item.cartKey}')" title="Hapus">🗑</button>
+        </div>
+      `).join('');
+    }
+
+    function handleQtyChange(key, delta) {
+      updateCartQty(key, delta);
+      updateSidebarCartUI();
+    }
+
+    function handleRemoveCart(key) {
+      removeFromCart(key);
+      updateSidebarCartUI();
+    }
+  </script>
+</body>
+</html>

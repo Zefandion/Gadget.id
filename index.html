@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Datang di Gadget.Id - Toko HP & Aksesoris Terpercaya #1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* SPECIFIC STYLES FOR WELCOME/OPENING PAGE */
+    .welcome-hero {
+      background: linear-gradient(135deg, #E01A1A 0%, #B01212 55%, #7D0B0B 100%);
+      color: #fff;
+      padding: 5.5rem 2.5rem 6.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+    }
+    .welcome-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -150px; left: 25%;
+      width: 400px; height: 400px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50%;
+    }
+    .welcome-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    .welcome-text {
+      flex: 1.1;
+      max-width: 620px;
+    }
+    .welcome-badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .welcome-pill {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .welcome-text h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.22;
+      margin-bottom: 1.2rem;
+    }
+    .welcome-text h1 span {
+      color: #FFD2D2;
+    }
+    .welcome-text p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      opacity: 0.92;
+      margin-bottom: 2.2rem;
+    }
+    .welcome-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn-main-cta {
+      background: #fff;
+      color: var(--red);
+      padding: 16px 36px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .btn-main-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+      background: #FFF5F5;
+    }
+    .btn-sub-cta {
+      background: transparent;
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-sub-cta:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #fff;
+    }
+    .welcome-auth-hint {
+      margin-top: 1.2rem;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .welcome-auth-hint a {
+      color: #FFD2D2;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .welcome-visual {
+      flex: 0.9;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    .phone-showcase-box {
+      position: relative;
+      width: 320px;
+      text-align: center;
+    }
+    .phone-showcase-img {
+      width: 100%;
+      max-width: 300px;
+      filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.45));
+      animation: floatWelcome 3.5s ease-in-out infinite;
+    }
+    @keyframes floatWelcome {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-14px) rotate(1deg); }
+    }
+    .floating-badge-1, .floating-badge-2 {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      color: var(--black);
+      padding: 10px 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      animation: floatMini 3s ease-in-out infinite alternate;
+    }
+    .floating-badge-1 {
+      top: 15%;
+      left: -35px;
+    }
+    .floating-badge-2 {
+      bottom: 15%;
+      right: -25px;
+      animation-delay: 1.5s;
+    }
+    @keyframes floatMini {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+
+    /* VALUE PILLARS */
+    .pillars-section {
+      padding: 4.5rem 2.5rem;
+      background: var(--white);
+    }
+    .max-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-header-center {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .pillar-card {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2.2rem 1.8rem;
+      transition: all 0.25s;
+      text-align: left;
+    }
+    .pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+      border-color: var(--red);
+      background: #FFFDFC;
+    }
+    .pillar-icon-wrap {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      background: var(--red-pale);
+      color: var(--red);
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.4rem;
+    }
+    .pillar-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--black);
+    }
+    .pillar-card p {
+      font-size: 0.92rem;
+      color: var(--gray-600);
+      line-height: 1.55;
+    }
+
+    /* FEATURED HIGHLIGHTS */
+    .highlights-section {
+      padding: 4.5rem 2.5rem;
+      background: var(--gray-50);
+    }
+    .highlight-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+    .highlight-card {
+      background: var(--white);
+      border-radius: 22px;
+      border: 1.5px solid var(--gray-200);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s;
+    }
+    .highlight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    .highlight-img-wrap {
+      background: linear-gradient(180deg, #F9F9F9 0%, #ECECEC 100%);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .highlight-img-wrap img {
+      max-height: 200px;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
+      transition: transform 0.3s;
+    }
+    .highlight-card:hover .highlight-img-wrap img {
+      transform: scale(1.08);
+    }
+    .highlight-content {
+      padding: 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .highlight-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--red-pale);
+      color: var(--red);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 0.8rem;
+    }
+    .highlight-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+    .highlight-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .highlight-price-row {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-200);
+    }
+    .highlight-price {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .btn-explore {
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: background 0.2s;
+    }
+    .btn-explore:hover {
+      background: var(--red-dark);
+    }
+
+    /* FLASH SALE BANNER */
+    .flash-banner {
+      background: linear-gradient(90deg, #18181B 0%, #27272A 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      margin: 4rem auto 0;
+      max-width: 1200px;
+    }
+    .flash-left h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+    .flash-left p {
+      color: #A1A1AA;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .countdown-boxes {
+      display: flex;
+      gap: 10px;
+    }
+    .c-box {
+      background: #3F3F46;
+      padding: 10px 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .c-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #FF5E5E;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .c-lbl {
+      font-size: 0.68rem;
+      color: #D4D4D8;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* TESTIMONIALS */
+    .testi-section {
+      padding: 4.5rem 2.5rem;
+      background: #fff;
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+    .testi-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      padding: 1.8rem;
+    }
+    .testi-stars {
+      color: #F59E0B;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
+    .testi-quote {
+      font-size: 0.95rem;
+      color: var(--gray-800);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+    .testi-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testi-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .testi-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .testi-tag {
+      font-size: 0.78rem;
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    /* CTA FINAL */
+    .cta-final-section {
+      background: linear-gradient(135deg, #111111 0%, #200505 100%);
+      color: #fff;
+      padding: 5rem 2.5rem;
+      text-align: center;
+    }
+    .cta-final-content {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .cta-final-content h2 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .cta-final-content p {
+      color: #A1A1AA;
+      font-size: 1.1rem;
+      margin-bottom: 2.2rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .welcome-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .welcome-text h1 {
+        font-size: 2.6rem;
+      }
+      .welcome-badge-row {
+        justify-content: center;
+      }
+      .welcome-actions {
+        justify-content: center;
+      }
+      .flash-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .countdown-boxes {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR CONTAINER -->
+  <div id="navbarContainer"></div>
+
+  
+
+  <main class="page-main-container">
+    <!-- AUTH REQUIRED BANNER -->
+    <div id="authRequiredBanner" style="display:none;" class="auth-required-banner">
+      <div class="auth-required-content">
+        <div class="auth-icon-badge">🔒</div>
+        <div class="auth-required-text">
+          <strong>Akses Terbatas: Anda Belum Masuk ke Akun</strong>
+          <p>Halaman Utama dan fitur belanja dapat diakses setelah masuk. Silakan Masuk, Daftar Akun Baru, atau hubungi Customer Service jika butuh bantuan.</p>
+        </div>
+      </div>
+      <div class="auth-required-btns">
+        <a href="login.html" class="btn-banner-login">🔑 Sign In</a>
+        <a href="cs.html" class="btn-banner-cs">💬 Hubungi CS</a>
+      </div>
+    </div>
+    <!-- WELCOME HERO -->
+    <section class="welcome-hero">
+      <div class="welcome-container">
+        <div class="welcome-text">
+          <div class="welcome-badge-row">
+            <span class="welcome-pill">✨ Official Store #1</span>
+            <span class="welcome-pill">🛡️ 100% Garansi Resmi</span>
+            <span class="welcome-pill">🚚 Bebas Ongkir</span>
+          </div>
+          <h1>Pusat Gadget & Aksesoris <span>Original Terlengkap</span></h1>
+          <p>
+            Temukan smartphone flagship Apple iPhone, Samsung Galaxy, AirPods, dan aksesoris fast charging UGREEN terbaik dengan jaminan garansi resmi, cicilan 0%, dan pelayanan 24 jam.
+          </p>
+          <div class="gateway-card">
+            <div class="gateway-header">
+              <div class="gateway-title">🔒 Akses Halaman Utama &amp; Katalog</div>
+              <span class="gateway-badge">Wajib Login</span>
+            </div>
+            <p class="gateway-desc">
+              Halaman utama toko dan 31+ katalog gadget resmi dapat diakses setelah Anda masuk ke akun. Masuk sekarang atau daftar akun baru untuk mulai berbelanja.
+            </p>
+            <div class="gateway-buttons">
+              <a href="login.html" class="btn-gateway-cs" style="background:linear-gradient(135deg, #E01A1A 0%, #B91C1C 100%);color:#fff;border:none;box-shadow:0 6px 20px rgba(224, 26, 26, 0.35);">
+                🔑 Sign In (Masuk)
+              </a>
+              <a href="register.html" class="btn-gateway-login">
+                📝 Daftar Baru
+              </a>
+              <!-- <a href="cs.html" class="btn-gateway-cs" title="Tanya Produk & Bantuan CS"> -->
+                <!-- 💬 Tanya CS 24 Jam -->
+              <!-- </a> -->
+            </div>
+          </div>
+          <div class="welcome-auth-hint" style="margin-top:1.2rem;">
+            💡 <em>Setelah masuk, seluruh fitur belanja, keranjang, wishlist, dan checkout akan terbuka. Layanan Customer Service 24/7 dapat diakses kapan saja.</em>
+          </div></div>
+        </div>
+
+        <!-- <div class="welcome-visual">
+          <div class="phone-showcase-box">
+            <div class="floating-badge-1">
+              <span>⭐</span>
+              <div style="text-align:left;">
+                <div style="font-size:0.75rem;color:var(--gray-400)">Rating Toko</div>
+                <div>4.9 / 5.0 (15k+ Ulasan)</div>
+              </div>
+            </div>
+            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-7inch-naturaltitanium?wid=2560&hei=1440&fmt=p-jpg&qlt=80&.v=1692895705658" alt="iPhone Flagship" class="phone-showcase-img" onerror="this.src='https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=350&h=450&fit=crop'">
+            <div class="floating-badge-2">
+              <span>⚡</span>
+              <div style="text-align:left;">
+                <div style="font-size:0.75rem;color:var(--gray-400)">Stok Tersedia</div>
+                <div>Siap Kirim Hari Ini</div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </section>
+
+    <!-- VALUE PILLARS -->
+    <section class="pillars-section">
+      <div class="max-container">
+        <div class="section-header-center">
+          <div class="title-accent" style="margin:0 auto 1rem;"></div>
+          <h2 class="section-title">Mengapa Memilih Gadget.Id?</h2>
+          <p class="section-sub">Komitmen kami memberikan pengalaman belanja gadget yang aman, terpercaya, dan memuaskan.</p>
+        </div>
+
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon-wrap">🛡️</div>
+            <h3>100% Produk Original</h3>
+            <p>Seluruh unit iPhone, Samsung, dan aksesoris kami bersumber langsung dari distributor resmi dengan garansi resmi 1 tahun.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon-wrap">🚚</div>
+            <h3>Gratis Ongkir se-Indonesia</h3>
+            <p>Nikmati pengiriman cepat dan aman tanpa biaya ongkos kirim ke seluruh pelosok tanah air via kurir ekspedisi terbaik.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon-wrap">💳</div>
+            <h3>Pembayaran Lengkap & Cicilan</h3>
+            <p>Pilihan pembayaran mudah melalui Virtual Account semua bank, E-Wallet (GoPay, OVO, DANA), QRIS, COD, hingga Cicilan 0%.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon-wrap">🎧</div>
+            <h3>Customer Service 24/7</h3>
+            <p>Layanan konsultasi spesifikasi dan bantuan kendala pesanan melalui Live Chat responsif yang siap melayani kapan saja.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIGHLIGHT PRODUK UNGGULAN -->
+    <section class="highlights-section">
+      <div class="max-container">
+        <div class="section-header-center">
+          <div class="title-accent" style="margin:0 auto 1rem;"></div>
+          <h2 class="section-title">Sorotan Produk Terbaru</h2>
+          <p class="section-sub">Teknologi tercanggih generasi terbaru yang siap menunjang produktivitas dan gaya hidup Anda.</p>
+        </div>
+
+        <div class="highlight-cards-grid">
+          <!-- Card 1 -->
+          <div class="highlight-card">
+            <div class="highlight-img-wrap">
+              <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=2560&hei=1440&fmt=p-jpg&qlt=80&.v=1725370983658" alt="iPhone 16" onerror="this.src='https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=300&h=300&fit=crop'">
+            </div>
+            <div class="highlight-content">
+              <span class="highlight-badge">Apple Flagship</span>
+              <h3 class="highlight-title">iPhone 16 Series</h3>
+              <p class="highlight-desc">Dilengkapi chip A18 mutakhir, kontrol kamera baru, dan Apple Intelligence untuk kecerdasan tanpa batas.</p>
+              <div class="highlight-price-row">
+                <div>
+                  <div style="font-size:0.75rem;color:var(--gray-400)">Mulai dari</div>
+                  <div class="highlight-price">Rp 14.999.000</div>
+                </div>
+                <a href="product-detail.html?id=4" class="btn-explore">Lihat Detail →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="highlight-card">
+            <div class="highlight-img-wrap">
+              <img src="https://images.samsung.com/is/image/samsung/p6pim/id/2401/gallery/id-galaxy-s24-s928-sm-s928bztcxid-thumb-539304381?$172_172_PNG$" alt="Samsung S25 Ultra" onerror="this.src='https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&h=300&fit=crop'">
+            </div>
+            <div class="highlight-content">
+              <span class="highlight-badge">Samsung AI Beast</span>
+              <h3 class="highlight-title">Galaxy S25 Ultra</h3>
+              <p class="highlight-desc">Performa Snapdragon 8 Elite tercepat, kamera 200MP revolusioner, dan S-Pen terintegrasi untuk multitasking profesional.</p>
+              <div class="highlight-price-row">
+                <div>
+                  <div style="font-size:0.75rem;color:var(--gray-400)">Mulai dari</div>
+                  <div class="highlight-price">Rp 22.999.000</div>
+                </div>
+                <a href="product-detail.html?id=12" class="btn-explore">Lihat Detail →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="highlight-card">
+            <div class="highlight-img-wrap">
+              <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-hero-select-202409?wid=928&hei=522&fmt=jpeg&qlt=90&.v=1725490236557" alt="AirPods Max" onerror="this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop'">
+            </div>
+            <div class="highlight-content">
+              <span class="highlight-badge">High-Fidelity Audio</span>
+              <h3 class="highlight-title">Apple AirPods Max</h3>
+              <p class="highlight-desc">Desain over-ear mewah dengan Active Noise Cancellation tingkat pro dan audio spasial dengan pelacakan kepala dinamis.</p>
+              <div class="highlight-price-row">
+                <div>
+                  <div style="font-size:0.75rem;color:var(--gray-400)">Mulai dari</div>
+                  <div class="highlight-price">Rp 7.499.000</div>
+                </div>
+                <a href="product-detail.html?id=21" class="btn-explore">Lihat Detail →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLASH SALE BANNER -->
+        <div class="flash-banner">
+          <div class="flash-left">
+            <h2>⚡ FLASH SALE SPESIAL BULAN INI</h2>
+            <p>Dapatkan diskon hingga Rp 2.500.000 + Voucher Cashback tambahan untuk setiap pembelian smartphone dan aksesoris.</p>
+            <div class="countdown-boxes">
+              <div class="c-box">
+                <div class="c-num" id="cdHours">14</div>
+                <div class="c-lbl">Jam</div>
+              </div>
+              <div class="c-box">
+                <div class="c-num" id="cdMins">32</div>
+                <div class="c-lbl">Menit</div>
+              </div>
+              <div class="c-box">
+                <div class="c-num" id="cdSecs">48</div>
+                <div class="c-lbl">Detik</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <a href="login.html" class="btn-white" style="text-decoration:none;padding:16px 36px;font-size:1.05rem;display:inline-block;border:none;cursor:pointer;font-weight:800;border-radius:50px;color:#E01A1A;">
+              🔑 Masuk untuk Belanja Flash Sale 🚀
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testi-section">
+      <div class="max-container">
+        <div class="section-header-center">
+          <div class="title-accent" style="margin:0 auto 1rem;"></div>
+          <h2 class="section-title">Apa Kata Pelanggan Kami?</h2>
+          <p class="section-sub">Lebih dari 50.000 pengguna telah mempercayakan kebutuhan gadget mereka di Gadget.Id.</p>
+        </div>
+
+        <div class="testi-grid">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"Pengiriman super kilat! Beli iPhone 16 Pro sore hari, besok siangnya sudah sampai di Surabaya dengan packing kayu super tebal. Segel green peel utuh dan garansi langsung aktif."</p>
+            <div class="testi-user">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" alt="Rina" class="testi-avatar">
+              <div>
+                <div class="testi-name">Rina Kusuma</div>
+                <div class="testi-tag">✓ Pembeli Terverifikasi (Surabaya)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"Customer Service Gadget.Id benar-benar ramah dan membantu sekali pas saya tanya-tanya perbandingan Samsung S25 Ultra vs S25+. Checkout mudah, QRIS langsung verifikasi. Rekomended pol!"</p>
+            <div class="testi-user">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Dimas" class="testi-avatar">
+              <div>
+                <div class="testi-name">Dimas Pratama</div>
+                <div class="testi-tag">✓ Pembeli Terverifikasi (Jakarta Selatan)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">"Aksesoris UGREEN GaN 100W dan powerbank 25000mAh nya original 100%. Ngecharge MacBook Pro dan iPhone barengan lancar jaya tidak panas. Terima kasih Gadget.Id!"</p>
+            <div class="testi-user">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Siti" class="testi-avatar">
+              <div>
+                <div class="testi-name">Siti Nurhaliza</div>
+                <div class="testi-tag">✓ Pembeli Terverifikasi (Bandung)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOMER SERVICE & SUPPORT SECTION -->
+    <section class="cs-preview-section" id="cs">
+      <div class="max-container">
+        <div class="cs-preview-box">
+          <div class="cs-pill-badge">🎧 Layanan Pelanggan 24/7</div>
+          <h2>Butuh Bantuan atau Konsultasi Gadget?</h2>
+          <p>Tim Customer Support spesialis Gadget.Id siap membantu Anda 24 jam nonstop untuk informasi spesifikasi smartphone, garansi resmi 1 tahun, panduan pemesanan, hingga cek status pengiriman.</p>
+          <div class="cs-features-row">
+            <div class="cs-feat-item">
+              <span class="cs-feat-icon">⚡</span>
+              <div>
+                <strong>Live Chat Respon Cepat</strong>
+                <span>Dibalas dalam &lt; 1 menit oleh agen spesialis</span>
+              </div>
+            </div>
+            <div class="cs-feat-item">
+              <span class="cs-feat-icon">🛡️</span>
+              <div>
+                <strong>Konsultasi Garansi Resmi</strong>
+                <span>Jaminan tukar baru 14 hari &amp; servis 1 tahun</span>
+              </div>
+            </div>
+            <div class="cs-feat-item">
+              <span class="cs-feat-icon">📱</span>
+              <div>
+                <strong>Hotline &amp; WhatsApp 24 Jam</strong>
+                <span>WhatsApp: +62 812-3456-7890</span>
+              </div>
+            </div>
+          </div>
+          <div class="cs-preview-actions">
+            <a href="cs.html" class="btn-cs-chat">
+              💬 Buka Live Chat Customer Service Sekarang →
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" class="btn-cs-wa">
+              📱 Chat via WhatsApp Resmi
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CALL TO ACTION -->
+    <section class="cta-final-section">
+      <div class="cta-final-content">
+        <h2>Siap Menemukan Gadget Impian Anda?</h2>
+        <p>Jelajahi seluruh katalog resmi kami, nikmati promo gratis ongkir, dan dapatkan garansi perlindungan penuh untuk setiap gadget Anda.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+          <a href="login.html" class="btn-white" style="text-decoration:none;padding:16px 36px;font-size:1.05rem;border:none;cursor:pointer;font-weight:800;border-radius:50px;color:#E01A1A;">
+            🔑 Sign In (Masuk Akun)
+          </a>
+          <a href="register.html" class="btn-outline-white" style="text-decoration:none;padding:15px 30px;border-radius:50px;font-weight:700;">
+            📝 Sign Up (Daftar Akun)
+          </a>
+          <!-- <a href="cs.html" class="btn-outline-white" style="text-decoration:none;padding:15px 30px;border-radius:50px;font-weight:700;">
+            💬 Hubungi CS 24 Jam
+          </a> -->
+        </div>
+      </div>
+    </section></main>
+
+  <!-- FOOTER CONTAINER -->
+  <div id="footerContainer"></div>
+
+  <!-- SHARED SCRIPT -->
+  <script src="shared.js"></script>
+  <script>
+    // Auth Protection: If user is logged in, redirect to home.html!
+    checkAuthProtection('welcome');
+
+    // Initialize Navbar & Footer
+    renderNavbar('welcome');
+    renderFooter();
+
+    // Check if auth=required parameter is present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth') === 'required') {
+      const banner = document.getElementById('authRequiredBanner');
+      if (banner) {
+        banner.style.display = 'flex';
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // Countdown Timer Simulator
+    let sec = 48, min = 32, hr = 14;
+    setInterval(() => {
+      sec--;
+      if (sec < 0) { sec = 59; min--; }
+      if (min < 0) { min = 59; hr--; }
+      if (hr < 0) { hr = 23; min = 59; sec = 59; }
+      const elS = document.getElementById('cdSecs');
+      const elM = document.getElementById('cdMins');
+      const elH = document.getElementById('cdHours');
+      if (elS) elS.textContent = String(sec).padStart(2, '0');
+      if (elM) elM.textContent = String(min).padStart(2, '0');
+      if (elH) elH.textContent = String(hr).padStart(2, '0');
+    }, 1000);
+  </script>
+</body>
+</html>

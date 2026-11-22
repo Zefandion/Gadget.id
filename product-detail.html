@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Produk - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .breadcrumb-wrap {
+      padding: 1.2rem 2.5rem;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      font-size: 0.88rem;
+    }
+    .breadcrumb-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+      color: var(--gray-400);
+    }
+    .breadcrumb-list a {
+      color: var(--gray-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .breadcrumb-list a:hover {
+      color: var(--red);
+    }
+    .breadcrumb-separator {
+      color: var(--gray-400);
+    }
+    .breadcrumb-current {
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .detail-main-section {
+      padding: 3rem 2.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    /* Left Gallery */
+    .gallery-container {
+      position: sticky;
+      top: 90px;
+    }
+    .main-image-card {
+      background: var(--gray-100);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .main-image-card img {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.18));
+      transition: transform 0.3s ease;
+    }
+    .main-image-card:hover img {
+      transform: scale(1.05);
+    }
+    .badge-official {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 12px;
+      margin-top: 1rem;
+    }
+    .thumb-item {
+      width: 72px;
+      height: 72px;
+      background: var(--gray-100);
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 6px;
+      transition: all 0.2s;
+    }
+    .thumb-item:hover, .thumb-item.active {
+      border-color: var(--red);
+      background: #FFF5F5;
+    }
+    .thumb-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Right Details */
+    .detail-info-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-category-pill {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--red-pale);
+      color: var(--red);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.8rem;
+    }
+    .product-detail-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.92rem;
+    }
+    .stars {
+      color: #F59E0B;
+      font-size: 1.1rem;
+    }
+    .review-count {
+      color: var(--gray-400);
+    }
+    .sold-count {
+      color: #10B981;
+      font-weight: 600;
+      background: #E8F5E9;
+      padding: 2px 10px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+    }
+
+    /* Price Box */
+    .price-box-detail {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 1.8rem;
+    }
+    .price-label {
+      font-size: 0.82rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .current-price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .old-price-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .old-price-strikethrough {
+      font-size: 1rem;
+      color: var(--gray-400);
+      text-decoration: line-through;
+    }
+    .discount-badge {
+      background: #EF4444;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* Selector sections */
+    .selector-block {
+      margin-bottom: 1.5rem;
+    }
+    .selector-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .detail-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Quantity and Stock */
+    .qty-stock-row {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .qty-picker {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .qty-picker-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .qty-picker-btn:hover {
+      background: var(--gray-100);
+      color: var(--red);
+    }
+    .qty-picker-val {
+      min-width: 45px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .stock-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #10B981;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    /* Action Buttons */
+    .detail-action-buttons {
+      display: grid;
+      grid-template-columns: 1.4fr 1.4fr 0.6fr;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    .btn-cart-action {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.25);
+    }
+    .btn-cart-action:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+    .btn-buy-now {
+      background: var(--black);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-buy-now:hover {
+      background: #27272A;
+      transform: translateY(-2px);
+    }
+    .btn-wish-action {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      color: var(--black);
+      border-radius: 14px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .btn-wish-action:hover, .btn-wish-action.active {
+      border-color: var(--red);
+      background: var(--red-pale);
+      color: var(--red);
+    }
+
+    /* Assurances */
+    .assurances-box {
+      border-top: 1.5px solid var(--gray-200);
+      padding-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .assurance-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+    .assurance-item span {
+      font-size: 1.2rem;
+    }
+
+    /* TABS SECTION */
+    .tabs-section {
+      background: var(--gray-50);
+      padding: 4rem 2.5rem;
+      border-top: 1px solid var(--gray-200);
+    }
+    .tabs-nav {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 2px solid var(--gray-200);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      padding: 12px 20px;
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .tab-btn:hover {
+      color: var(--black);
+    }
+    .tab-btn.active {
+      color: var(--red);
+      font-weight: 700;
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--red);
+      border-radius: 3px;
+    }
+    .tab-content {
+      display: none;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid var(--gray-200);
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeInTab 0.25s ease;
+    }
+    @keyframes fadeInTab {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Specs table */
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .specs-table tr {
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .specs-table td {
+      padding: 14px 16px;
+      font-size: 0.92rem;
+    }
+    .specs-table td.spec-name {
+      width: 25%;
+      font-weight: 700;
+      color: var(--gray-600);
+      background: var(--gray-50);
+    }
+    .specs-table td.spec-val {
+      color: var(--black);
+    }
+
+    @media (max-width: 900px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .gallery-container {
+        position: static;
+      }
+      .detail-action-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumb-wrap">
+    <div class="max-container">
+      <ul class="breadcrumb-list">
+        <li><a href="index.html">Beranda</a></li>
+        <li class="breadcrumb-separator">/</li>
+        <li><a href="home.html">Katalog</a></li>
+        <li class="breadcrumb-separator">/</li>
+        <li id="bcCategory"><a href="home.html">Smartphone</a></li>
+        <li class="breadcrumb-separator">/</li>
+        <li class="breadcrumb-current" id="bcTitle">Detail Produk</li>
+      </ul>
+    </div>
+  </div>
+
+  <main class="page-main-container">
+    <section class="detail-main-section">
+      <div class="detail-grid">
+        <!-- LEFT: GALLERY -->
+        <div class="gallery-container">
+          <div class="main-image-card">
+            <span class="badge-official" id="pBadge">Official Store</span>
+            <img id="mainProductImg" src="" alt="Detail Produk">
+          </div>
+          <div class="gallery-thumbs" id="thumbsContainer">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- RIGHT: PRODUCT INFO -->
+        <div class="detail-info-col">
+          <span class="brand-category-pill" id="pBrandCategory">Apple · Smartphone</span>
+          <h1 class="product-detail-title" id="pName">Nama Produk</h1>
+
+          <div class="rating-row">
+            <span class="stars">★★★★★</span>
+            <span style="font-weight:700;">4.9</span>
+            <span class="review-count">(184 Ulasan Pembeli)</span>
+            <span class="sold-count">Terjual 350+ unit</span>
+          </div>
+
+          <!-- PRICE BOX -->
+          <div class="price-box-detail">
+            <div class="price-label">Harga Spesial Resmi</div>
+            <div class="current-price" id="pPriceDisplay">Rp 0</div>
+            <div class="old-price-wrap" id="oldPriceRow">
+              <span class="old-price-strikethrough" id="pOldPrice">Rp 0</span>
+              <span class="discount-badge" id="pDiscountBadge">DISKON 10%</span>
+            </div>
+          </div>
+
+          <!-- COLOR SELECTOR -->
+          <div class="selector-block" id="colorSelectorBlock">
+            <div class="selector-title">Pilih Warna: <strong id="selectedColorName" style="color:var(--black)"></strong></div>
+            <div class="detail-chips-row" id="colorChipsRow"></div>
+          </div>
+
+          <!-- STORAGE SELECTOR -->
+          <div class="selector-block" id="storageSelectorBlock">
+            <div class="selector-title">Pilih Kapasitas / Varian: <strong id="selectedStorageName" style="color:var(--black)"></strong></div>
+            <div class="detail-chips-row" id="storageChipsRow"></div>
+          </div>
+
+          <!-- QUANTITY & STOCK -->
+          <div class="qty-stock-row">
+            <div>
+              <div class="selector-title" style="margin-bottom:0.4rem;">Jumlah:</div>
+              <div class="qty-picker">
+                <button type="button" class="qty-picker-btn" onclick="changeQty(-1)">−</button>
+                <span class="qty-picker-val" id="qtyDisplay">1</span>
+                <button type="button" class="qty-picker-btn" onclick="changeQty(1)">+</button>
+              </div>
+            </div>
+            <div>
+              <div class="stock-indicator">
+                <span class="pulse-dot"></span>
+                <span id="stockDisplay">Stok Tersedia: 18 unit</span>
+              </div>
+              <div style="font-size:0.78rem;color:var(--gray-400);margin-top:2px;">Siap dikirim hari ini</div>
+            </div>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div class="detail-action-buttons">
+            <button class="btn-cart-action" onclick="handleDetailAddToCart()">
+              🛒 Tambah ke Keranjang
+            </button>
+            <button class="btn-buy-now" onclick="handleDetailBuyNow()">
+              ⚡ Beli Sekarang
+            </button>
+            <button class="btn-wish-action" id="btnWishAction" onclick="handleDetailWishlistToggle()" title="Tambah ke Wishlist">
+              🤍
+            </button>
+          </div>
+
+          <!-- ASSURANCES -->
+          <div class="assurances-box">
+            <div class="assurance-item">
+              <span>🛡️</span>
+              <div>
+                <strong>Garansi Resmi 1 Tahun</strong>
+                <div style="font-size:0.75rem;color:var(--gray-400)">Servis center seluruh Indonesia</div>
+              </div>
+            </div>
+            <div class="assurance-item">
+              <span>🚚</span>
+              <div>
+                <strong>Gratis Ongkos Kirim</strong>
+                <div style="font-size:0.75rem;color:var(--gray-400)">Pengiriman cepat & aman</div>
+              </div>
+            </div>
+            <div class="assurance-item">
+              <span>🔄</span>
+              <div>
+                <strong>Tukar Baru 14 Hari</strong>
+                <div style="font-size:0.75rem;color:var(--gray-400)">Jika ada cacat produksi pabrik</div>
+              </div>
+            </div>
+            <div class="assurance-item">
+              <span>🔐</span>
+              <div>
+                <strong>100% Produk Original</strong>
+                <div style="font-size:0.75rem;color:var(--gray-400)">Jaminan uang kembali utuh</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABS: SPECS, DESC, REVIEWS, WARRANTY -->
+    <section class="tabs-section">
+      <div class="max-container">
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchTab('specs', this)">📋 Spesifikasi Lengkap</button>
+          <button class="tab-btn" onclick="switchTab('desc', this)">📖 Deskripsi Produk</button>
+          <button class="tab-btn" onclick="switchTab('reviews', this)">⭐ Ulasan Pembeli (184)</button>
+          <button class="tab-btn" onclick="switchTab('warranty', this)">🛡️ Garansi & Pengiriman</button>
+        </div>
+
+        <!-- TAB CONTENT: SPECS -->
+        <div class="tab-content active" id="tabSpecs">
+          <h3 style="font-size:1.2rem;margin-bottom:1.5rem;font-weight:700;">Spesifikasi Teknis Resmi</h3>
+          <table class="specs-table" id="specsTable">
+            <!-- Dynamic rows -->
+          </table>
+        </div>
+
+        <!-- TAB CONTENT: DESC -->
+        <div class="tab-content" id="tabDesc">
+          <div id="descContent" style="line-height:1.8;color:var(--gray-800);font-size:0.95rem;">
+            <!-- Dynamic desc -->
+          </div>
+        </div>
+
+        <!-- TAB CONTENT: REVIEWS -->
+        <div class="tab-content" id="tabReviews">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="font-size:2.4rem;font-weight:800;color:var(--black);font-family:'Plus Jakarta Sans',sans-serif;">4.9 <span style="font-size:1rem;color:var(--gray-400);font-weight:400;">/ 5.0</span></div>
+              <div style="color:#F59E0B;font-size:1.2rem;">★★★★★</div>
+              <div style="font-size:0.85rem;color:var(--gray-400);margin-top:2px;">Berdasarkan 184 ulasan pembeli terverifikasi</div>
+            </div>
+            <button class="btn-sub-cta" style="color:var(--red);border-color:var(--red);padding:10px 20px;font-size:0.9rem;" onclick="showToast('⭐', 'Terima kasih! Fitur tulis ulasan akan terbuka setelah pesanan Anda selesai.')">Tulis Ulasan</button>
+          </div>
+
+          <div style="display:grid;gap:1.5rem;">
+            <div style="background:var(--gray-50);padding:1.4rem;border-radius:14px;border:1px solid var(--gray-200);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <strong>Andi Wijaya</strong>
+                <span style="font-size:0.8rem;color:var(--gray-400);">2 hari yang lalu</span>
+              </div>
+              <div style="color:#F59E0B;font-size:0.9rem;margin-bottom:6px;">★★★★★ <span style="color:#10B981;font-size:0.78rem;font-weight:600;">✓ Pembelian Terverifikasi</span></div>
+              <p style="font-size:0.92rem;color:var(--gray-800);line-height:1.5;">"Barang mendarat dengan aman! Kondisi kotak masih tersegel rapat dari pabrik, IMEI langsung terdaftar di Kemenperin. Performa sangat kencang dan baterai awet seharian."</p>
+            </div>
+
+            <div style="background:var(--gray-50);padding:1.4rem;border-radius:14px;border:1px solid var(--gray-200);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <strong>Devi Mariska</strong>
+                <span style="font-size:0.8rem;color:var(--gray-400);">5 hari yang lalu</span>
+              </div>
+              <div style="color:#F59E0B;font-size:0.9rem;margin-bottom:6px;">★★★★★ <span style="color:#10B981;font-size:0.78rem;font-weight:600;">✓ Pembelian Terverifikasi</span></div>
+              <p style="font-size:0.92rem;color:var(--gray-800);line-height:1.5;">"Warnanya jauh lebih cantik aslinya dibanding di foto! Pengemasan bubble wrap tebal dan kurir GoSend ramah. Puas belanja di Gadget.Id, langganan terpercaya!"</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT: WARRANTY -->
+        <div class="tab-content" id="tabWarranty">
+          <h3 style="font-size:1.2rem;margin-bottom:1rem;font-weight:700;">Kebijakan Garansi &amp; Pengiriman</h3>
+          <ul style="line-height:1.8;padding-left:1.2rem;color:var(--gray-800);font-size:0.92rem;">
+            <li><strong>Garansi Resmi 1 Tahun:</strong> Unit dapat diklaim di seluruh Service Center Resmi (Apple Authorized Service Provider / Samsung Service Center / UGREEN Official) di seluruh Indonesia.</li>
+            <li><strong>Garansi Toko 14 Hari:</strong> Apabila terdapat cacat bawaan pabrik, Anda berhak mendapatkan unit pengganti baru tanpa dipungut biaya.</li>
+            <li><strong>Pengiriman Aman:</strong> Semua paket pesanan diasuransikan penuh dan dikemas dengan bubble wrap berlapis serta opsi packing kayu.</li>
+            <li><strong>Gratis Ongkir:</strong> Berlaku untuk seluruh wilayah Indonesia dengan minimal pembelian Rp 500.000.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('detail');
+    renderNavbar('detail');
+    renderFooter();
+
+    let currentProduct = null;
+    let selectedColor = null;
+    let selectedStorage = null;
+    let quantity = 1;
+
+    // Load Product from URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const idParam = parseInt(urlParams.get('id'), 10) || 1;
+      currentProduct = products.find(p => p.id === idParam) || products[0];
+
+      initProductDetails();
+    });
+
+    function initProductDetails() {
+      const p = currentProduct;
+      selectedColor = (p.colors && p.colors[0]) || null;
+      selectedStorage = (p.storageOpts && p.storageOpts[0]) || p.storage || null;
+
+      // Breadcrumb & Titles
+      document.getElementById('bcCategory').innerHTML = `<a href="home.html?cat=${p.category}">${p.category.toUpperCase()}</a>`;
+      document.getElementById('bcTitle').textContent = p.name;
+      document.getElementById('pBrandCategory').textContent = `${p.brand} · ${p.category.toUpperCase()}`;
+      document.getElementById('pName').textContent = p.name;
+      document.getElementById('pBadge').textContent = p.badge || 'Official';
+
+      // Images
+      const mainImg = document.getElementById('mainProductImg');
+      mainImg.src = p.img;
+
+      const thumbs = document.getElementById('thumbsContainer');
+      thumbs.innerHTML = `
+        <div class="thumb-item active" onclick="setMainImage('${p.img}', this)">
+          <img src="${p.img}" alt="${p.name}">
+        </div>
+      `;
+
+      // Price
+      updatePrice();
+
+      // Colors
+      const colorBlock = document.getElementById('colorSelectorBlock');
+      const colorRow = document.getElementById('colorChipsRow');
+      if (p.colors && p.colors.length > 0) {
+        colorBlock.style.display = 'block';
+        document.getElementById('selectedColorName').textContent = selectedColor;
+        colorRow.innerHTML = p.colors.map(c => `
+          <div class="chip color-chip ${c === selectedColor ? 'selected' : ''}" onclick="pickColor('${c}', this)">
+            <span class="color-dot" style="background:${colorMap[c] || '#888'}"></span>${c}
+          </div>
+        `).join('');
+      } else {
+        colorBlock.style.display = 'none';
+      }
+
+      // Storage
+      const storageBlock = document.getElementById('storageSelectorBlock');
+      const storageRow = document.getElementById('storageChipsRow');
+      if (p.storageOpts && p.storageOpts.length > 0) {
+        storageBlock.style.display = 'block';
+        document.getElementById('selectedStorageName').textContent = selectedStorage;
+        storageRow.innerHTML = p.storageOpts.map(s => `
+          <div class="chip ${s === selectedStorage ? 'selected' : ''}" onclick="pickStorage('${s}', this)">
+            ${s} ${p.storagePrice && p.storagePrice[s] ? '+' + formatRp(p.storagePrice[s]) : ''}
+          </div>
+        `).join('');
+      } else if (p.storage) {
+        storageBlock.style.display = 'block';
+        document.getElementById('selectedStorageName').textContent = p.storage;
+        storageRow.innerHTML = `<div class="chip selected">${p.storage}</div>`;
+      } else {
+        storageBlock.style.display = 'none';
+      }
+
+      // Wishlist state
+      updateWishlistBtn();
+
+      // Specs & Description
+      populateSpecsAndDesc();
+    }
+
+    function setMainImage(src, thumbEl) {
+      document.getElementById('mainProductImg').src = src;
+      document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+      thumbEl.classList.add('active');
+    }
+
+    function pickColor(c, el) {
+      selectedColor = c;
+      document.getElementById('selectedColorName').textContent = c;
+      document.querySelectorAll('#colorChipsRow .chip').forEach(ch => ch.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function pickStorage(s, el) {
+      selectedStorage = s;
+      document.getElementById('selectedStorageName').textContent = s;
+      document.querySelectorAll('#storageChipsRow .chip').forEach(ch => ch.classList.remove('selected'));
+      el.classList.add('selected');
+      updatePrice();
+    }
+
+    function updatePrice() {
+      const p = currentProduct;
+      const extra = (p.storagePrice && p.storagePrice[selectedStorage]) || 0;
+      const finalPrice = p.price + extra;
+      const oldPrice = p.oldPrice ? p.oldPrice + extra : null;
+
+      document.getElementById('pPriceDisplay').textContent = formatRp(finalPrice);
+      if (oldPrice) {
+        document.getElementById('oldPriceRow').style.display = 'flex';
+        document.getElementById('pOldPrice').textContent = formatRp(oldPrice);
+        const discountPercent = Math.round(((oldPrice - finalPrice) / oldPrice) * 100);
+        document.getElementById('pDiscountBadge').textContent = `HEMAT ${discountPercent}%`;
+      } else {
+        document.getElementById('oldPriceRow').style.display = 'none';
+      }
+    }
+
+    function changeQty(delta) {
+      quantity = Math.max(1, quantity + delta);
+      document.getElementById('qtyDisplay').textContent = quantity;
+    }
+
+    function updateWishlistBtn() {
+      const btn = document.getElementById('btnWishAction');
+      const inWish = isInWishlist(currentProduct.id);
+      if (inWish) {
+        btn.classList.add('active');
+        btn.innerHTML = '❤️';
+      } else {
+        btn.classList.remove('active');
+        btn.innerHTML = '🤍';
+      }
+    }
+
+    function handleDetailWishlistToggle() {
+      toggleWishlist(currentProduct.id);
+      updateWishlistBtn();
+    }
+
+    function handleDetailAddToCart() {
+      addToCart(currentProduct.id, {
+        color: selectedColor,
+        storage: selectedStorage,
+        qty: quantity
+      });
+    }
+
+    function handleDetailBuyNow() {
+      handleDetailAddToCart();
+      setTimeout(() => {
+        window.location.href = 'checkout.html';
+      }, 500);
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById('tab' + tabId.charAt(0).toUpperCase() + tabId.slice(1));
+      if (target) target.classList.add('active');
+    }
+
+    function populateSpecsAndDesc() {
+      const p = currentProduct;
+      const specsTable = document.getElementById('specsTable');
+      const descContent = document.getElementById('descContent');
+
+      let specsHTML = `
+        <tr><td class="spec-name">Brand / Merek</td><td class="spec-val">${p.brand}</td></tr>
+        <tr><td class="spec-name">Model Resmi</td><td class="spec-val">${p.name}</td></tr>
+        <tr><td class="spec-name">Kategori</td><td class="spec-val">${p.category.toUpperCase()}</td></tr>
+        <tr><td class="spec-name">Garansi</td><td class="spec-val">1 Tahun Resmi Distributor</td></tr>
+      `;
+
+      if (p.category === 'iphone' || p.category === 'samsung') {
+        specsHTML += `
+          <tr><td class="spec-name">RAM &amp; Penyimpanan</td><td class="spec-val">${p.ram || '8GB'} / ${p.storage || '128GB'}</td></tr>
+          <tr><td class="spec-name">Layar</td><td class="spec-val">Super Retina XDR OLED / Dynamic AMOLED 2X 120Hz</td></tr>
+          <tr><td class="spec-name">Konektivitas</td><td class="spec-val">5G, Wi-Fi 7, Bluetooth 5.4, USB-C</td></tr>
+          <tr><td class="spec-name">Fitur Khusus</td><td class="spec-val">Water Resistant IP68, Fast Charging, Face ID / In-Display Fingerprint</td></tr>
+        `;
+      } else if (p.category === 'airpods') {
+        specsHTML += `
+          <tr><td class="spec-name">Tipe Audio</td><td class="spec-val">Active Noise Cancellation (ANC) &amp; Adaptive Transparency</td></tr>
+          <tr><td class="spec-name">Daya Tahan Baterai</td><td class="spec-val">Hingga 30 Jam dengan Casing Pengisian USB-C</td></tr>
+          <tr><td class="spec-name">Mikrofon</td><td class="spec-val">Dual Beamforming dengan Voice Isolation</td></tr>
+        `;
+      } else {
+        specsHTML += `
+          <tr><td class="spec-name">Kapasitas / Daya</td><td class="spec-val">${p.storage || 'Fast Charging'}</td></tr>
+          <tr><td class="spec-name">Material &amp; Port</td><td class="spec-val">GaN Fast Tech / Aluminium Alloy &amp; Braided Nylon</td></tr>
+          <tr><td class="spec-name">Sertifikasi</td><td class="spec-val">MFi, CE, FCC, RoHS Certified</td></tr>
+        `;
+      }
+
+      specsTable.innerHTML = specsHTML;
+
+      descContent.innerHTML = `
+        <p style="margin-bottom:1rem;">
+          <strong>${p.name}</strong> adalah produk gadget resmi persembahan <strong>${p.brand}</strong> yang didesain khusus untuk memberikan pengalaman performa terbaik dan keandalan tingkat tinggi. Dibuat menggunakan material premium berkualitas tinggi, produk ini siap menunjang kebutuhan komunikasi, hiburan, dan produktivitas Anda setiap saat.
+        </p>
+        <p style="margin-bottom:1rem;">
+          Semua produk yang dijual di <strong>Gadget.Id</strong> dijamin 100% Original, baru dan tersegel rapi dari pabrik. Kami memberikan jaminan tukar baru selama 14 hari kerja dan dukungan garansi resmi selama 1 tahun di service center resmi di seluruh Indonesia.
+        </p>
+        <div style="background:#FFF0F0;border-left:4px solid var(--red);padding:1rem;border-radius:0 8px 8px 0;margin-top:1.5rem;">
+          <strong>Isi Dalam Kotak (What's in the Box):</strong>
+          <ul style="margin-top:6px;padding-left:1.2rem;">
+            <li>1x Unit Resmi ${p.name}</li>
+            <li>1x Kabel Pengisian Original</li>
+            <li>1x Buku Panduan Pengguna &amp; Kartu Garansi Resmi</li>
+          </ul>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

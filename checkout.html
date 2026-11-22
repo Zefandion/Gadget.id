@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Pengiriman - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .checkout-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem;
+    }
+
+    /* Checkout Steps Bar */
+    .checkout-steps-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: var(--gray-400);
+      font-weight: 600;
+    }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .step-item.active {
+      color: var(--red);
+    }
+    .step-item.active .step-num {
+      background: var(--red);
+      color: #fff;
+    }
+    .step-item.done {
+      color: #10B981;
+    }
+    .step-item.done .step-num {
+      background: #10B981;
+      color: #fff;
+    }
+    .step-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--gray-200);
+    }
+
+    .checkout-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .checkout-form-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2.2rem;
+      margin-bottom: 2rem;
+    }
+    .checkout-form-card:last-child {
+      margin-bottom: 0;
+    }
+    .form-card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1.5px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Courier Selection */
+    .courier-opts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .courier-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .courier-card.selected {
+      border-color: var(--red);
+      background: var(--red-pale);
+    }
+    .courier-card input[type=radio] {
+      accent-color: var(--red);
+    }
+    .courier-info {
+      flex: 1;
+    }
+    .courier-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--black);
+    }
+    .courier-est {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+    .courier-price-box {
+      text-align: right;
+    }
+    .courier-old-price {
+      font-size: 0.78rem;
+      color: var(--gray-400);
+      text-decoration: line-through;
+      display: block;
+    }
+    .courier-free-tag {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #10B981;
+    }
+
+    /* Checkout Summary */
+    .checkout-summary-box {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2rem;
+      position: sticky;
+      top: 90px;
+    }
+    .summary-box-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+    .summary-items-scroll {
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 1.2rem;
+    }
+    .summary-item-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .summary-item-img {
+      width: 48px;
+      height: 48px;
+      background: var(--gray-100);
+      border-radius: 8px;
+      object-fit: contain;
+      padding: 4px;
+    }
+    .summary-item-info {
+      flex: 1;
+    }
+    .summary-item-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    .summary-item-meta {
+      font-size: 0.78rem;
+      color: var(--gray-400);
+    }
+    .summary-item-total {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--red);
+      white-space: nowrap;
+    }
+
+    .btn-to-payment {
+      width: 100%;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-top: 1.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(224, 26, 26, 0.25);
+    }
+    .btn-to-payment:hover {
+      background: var(--red-dark);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 900px) {
+      .checkout-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .checkout-summary-box {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="checkout-wrap">
+      <!-- STEPS BAR -->
+      <div class="checkout-steps-bar">
+        <div class="step-item done">
+          <div class="step-num">✓</div>
+          <span>Keranjang</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item active">
+          <div class="step-num">2</div>
+          <span>Pengiriman</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <span>Pembayaran</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <span>Selesai</span>
+        </div>
+      </div>
+
+      <!-- MAIN LAYOUT -->
+      <div class="checkout-layout-grid">
+        <!-- LEFT: FORM DATA -->
+        <div>
+          <form id="checkoutForm" onsubmit="handleProceedToPayment(event)">
+            <!-- RECIPIENT INFO -->
+            <div class="checkout-form-card">
+              <div class="form-card-title">
+                <span>👤</span> Data Kontak &amp; Penerima
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cName">Nama Lengkap Penerima <span>*</span></label>
+                <input type="text" id="cName" class="form-input" placeholder="Nama lengkap penerima paket" required minlength="3">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cPhone">Nomor WhatsApp / HP <span>*</span></label>
+                  <input type="tel" id="cPhone" class="form-input" placeholder="08xxxxxxxxxx" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cEmail">Alamat Email <span>*</span></label>
+                  <input type="email" id="cEmail" class="form-input" placeholder="email@contoh.com" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- SHIPPING ADDRESS -->
+            <div class="checkout-form-card">
+              <div class="form-card-title">
+                <span>📍</span> Alamat Pengiriman Lengkap
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cAddress">Alamat Rumah / Kantor / Gedung <span>*</span></label>
+                <textarea id="cAddress" class="form-input" rows="3" placeholder="Nama jalan, nomor rumah, RT/RW, kelurahan, kecamatan, patokan..." required minlength="10" style="resize:vertical;"></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cCity">Kota / Kabupaten <span>*</span></label>
+                  <input type="text" id="cCity" class="form-input" placeholder="contoh: Jakarta Selatan" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cProvince">Provinsi <span>*</span></label>
+                  <input type="text" id="cProvince" class="form-input" placeholder="contoh: DKI Jakarta" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cPostal">Kode Pos <span>*</span></label>
+                  <input type="text" id="cPostal" class="form-input" placeholder="5 digit angka" required pattern="[0-9]{5}">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cNotes">Catatan untuk Kurir (Opsional)</label>
+                  <input type="text" id="cNotes" class="form-input" placeholder="contoh: Titip ke satpam jika tidak ada orang">
+                </div>
+              </div>
+            </div>
+
+            <!-- COURIER SELECTION -->
+            <div class="checkout-form-card">
+              <div class="form-card-title">
+                <span>🚚</span> Pilih Jasa Ekspedisi Pengiriman
+              </div>
+              <div class="courier-opts-list">
+                <label class="courier-card selected" onclick="pickCourier(this, 'J&T Express')">
+                  <input type="radio" name="courier" value="J&T Express" checked>
+                  <div class="courier-info">
+                    <div class="courier-name">J&amp;T Express Regular</div>
+                    <div class="courier-est">Estimasi 1–3 hari kerja · Pengiriman Cepat</div>
+                  </div>
+                  <div class="courier-price-box">
+                    <span class="courier-old-price">Rp 25.000</span>
+                    <span class="courier-free-tag">GRATIS</span>
+                  </div>
+                </label>
+
+                <label class="courier-card" onclick="pickCourier(this, 'SiCepat BEST')">
+                  <input type="radio" name="courier" value="SiCepat BEST">
+                  <div class="courier-info">
+                    <div class="courier-name">SiCepat BEST (Besok Sampai Tujuan)</div>
+                    <div class="courier-est">Estimasi 1–2 hari kerja · Prioritas Kilat</div>
+                  </div>
+                  <div class="courier-price-box">
+                    <span class="courier-old-price">Rp 45.000</span>
+                    <span class="courier-free-tag">GRATIS</span>
+                  </div>
+                </label>
+
+                <label class="courier-card" onclick="pickCourier(this, 'JNE Reguler')">
+                  <input type="radio" name="courier" value="JNE Reguler">
+                  <div class="courier-info">
+                    <div class="courier-name">JNE Reguler Resmi</div>
+                    <div class="courier-est">Estimasi 2–3 hari kerja · Terpercaya</div>
+                  </div>
+                  <div class="courier-price-box">
+                    <span class="courier-old-price">Rp 20.000</span>
+                    <span class="courier-free-tag">GRATIS</span>
+                  </div>
+                </label>
+
+                <label class="courier-card" onclick="pickCourier(this, 'GoSend Same Day')">
+                  <input type="radio" name="courier" value="GoSend Same Day">
+                  <div class="courier-info">
+                    <div class="courier-name">GoSend Same Day (Area Tertentu)</div>
+                    <div class="courier-est">Tiba hari ini (khusus Jabodetabek &amp; kota besar)</div>
+                  </div>
+                  <div class="courier-price-box">
+                    <span class="courier-free-tag">GRATIS</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- RIGHT: SUMMARY -->
+        <div>
+          <div class="checkout-summary-box">
+            <div class="summary-box-title">Ringkasan Pesanan</div>
+            <div class="summary-items-scroll" id="checkoutItemsList">
+              <!-- Rendered via JS -->
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-calc-row">
+              <span>Subtotal Produk</span>
+              <span id="csSubtotal" style="font-weight:600;color:var(--black);">Rp 0</span>
+            </div>
+            <div class="summary-calc-row">
+              <span>Ongkos Kirim</span>
+              <span style="color:#10B981;font-weight:700;">GRATIS</span>
+            </div>
+            <div class="summary-calc-row">
+              <span>Biaya Asuransi Pengiriman</span>
+              <span style="color:#10B981;font-weight:700;">GRATIS</span>
+            </div>
+            <div class="summary-calc-row total-row">
+              <span>Total Pembayaran</span>
+              <span id="csTotal">Rp 0</span>
+            </div>
+
+            <button type="button" class="btn-to-payment" onclick="document.getElementById('checkoutForm').requestSubmit()">
+              Lanjut ke Pembayaran →
+            </button>
+
+            <div class="secure-checkout-hint">
+              🔐 Pembayaran Anda dilindungi enkripsi SSL 256-bit standar perbankan.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('checkout');
+    renderNavbar('checkout');
+    renderFooter();
+
+    let selectedCourierName = 'J&T Express';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const cart = getCart();
+      if (!cart.length) {
+        showToast('⚠️', 'Keranjang Anda kosong! Silakan tambahkan produk terlebih dahulu.');
+        setTimeout(() => {
+          window.location.href = 'home.html';
+        }, 1200);
+        return;
+      }
+
+      // Pre-fill user data if logged in
+      const user = getCurrentUser();
+      if (user) {
+        if (user.name) document.getElementById('cName').value = user.name;
+        if (user.email) document.getElementById('cEmail').value = user.email;
+        if (user.phone) document.getElementById('cPhone').value = user.phone;
+        if (user.address && user.address !== 'Belum diatur') document.getElementById('cAddress').value = user.address;
+        if (user.city) document.getElementById('cCity').value = user.city;
+        if (user.province) document.getElementById('cProvince').value = user.province;
+        if (user.postalCode) document.getElementById('cPostal').value = user.postalCode;
+      }
+
+      renderCheckoutItems();
+    });
+
+    function renderCheckoutItems() {
+      const cart = getCart();
+      const listEl = document.getElementById('checkoutItemsList');
+      const subtotal = getCartTotal();
+
+      document.getElementById('csSubtotal').textContent = formatRp(subtotal);
+      document.getElementById('csTotal').textContent = formatRp(subtotal);
+
+      listEl.innerHTML = cart.map(item => `
+        <div class="summary-item-row">
+          <img src="${item.img}" alt="${item.name}" class="summary-item-img" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=60&h=60&fit=crop'">
+          <div class="summary-item-info">
+            <div class="summary-item-name">${item.name}</div>
+            <div class="summary-item-meta">${item.variantLabel || ''} · x${item.qty}</div>
+          </div>
+          <div class="summary-item-total">${formatRp(item.price * item.qty)}</div>
+        </div>
+      `).join('');
+    }
+
+    function pickCourier(cardEl, courierName) {
+      document.querySelectorAll('.courier-card').forEach(c => c.classList.remove('selected'));
+      cardEl.classList.add('selected');
+      cardEl.querySelector('input[type=radio]').checked = true;
+      selectedCourierName = courierName;
+    }
+
+    function handleProceedToPayment(e) {
+      e.preventDefault();
+
+      const customerInfo = {
+        name: document.getElementById('cName').value.trim(),
+        phone: document.getElementById('cPhone').value.trim(),
+        email: document.getElementById('cEmail').value.trim(),
+        address: document.getElementById('cAddress').value.trim(),
+        city: document.getElementById('cCity').value.trim(),
+        province: document.getElementById('cProvince').value.trim(),
+        postalCode: document.getElementById('cPostal').value.trim(),
+        notes: document.getElementById('cNotes').value.trim(),
+        courier: selectedCourierName
+      };
+
+      // Save to localStorage for payment page
+      localStorage.setItem(STORAGE_KEYS.CHECKOUT_INFO, JSON.stringify(customerInfo));
+
+      showToast('📦', 'Data pengiriman tersimpan! Mengalihkan ke pembayaran...');
+      setTimeout(() => {
+        window.location.href = 'payment.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>

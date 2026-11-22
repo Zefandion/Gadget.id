@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Service &amp; Live Chat 24/7 - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .cs-page-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem;
+    }
+    .cs-header-banner {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+    .cs-header-banner h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+    }
+    .cs-header-banner p {
+      font-size: 1rem;
+      color: var(--gray-400);
+      line-height: 1.6;
+    }
+
+    .cs-main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Live Chat Window */
+    .chat-card-panel {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      height: 640px;
+    }
+    .chat-panel-header {
+      background: linear-gradient(135deg, #E01A1A 0%, #B01212 100%);
+      color: #fff;
+      padding: 1.2rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-agent-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      object-fit: cover;
+    }
+    .chat-agent-info h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .chat-agent-status {
+      font-size: 0.78rem;
+      color: #D1FAE5;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .online-indicator-dot {
+      width: 7px;
+      height: 7px;
+      background: #34D399;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #34D399;
+    }
+
+    /* Message history */
+    .chat-messages-container {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background: #F9FAFB;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .chat-bubble-row {
+      display: flex;
+      gap: 10px;
+      max-width: 85%;
+    }
+    .chat-bubble-row.agent {
+      align-self: flex-start;
+    }
+    .chat-bubble-row.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .chat-bubble.agent {
+      background: var(--white);
+      color: var(--black);
+      border: 1px solid var(--gray-200);
+      border-top-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    .chat-bubble.user {
+      background: var(--red);
+      color: #fff;
+      border-top-right-radius: 4px;
+      box-shadow: 0 2px 8px rgba(224, 26, 26, 0.2);
+    }
+    .chat-time {
+      font-size: 0.7rem;
+      color: var(--gray-400);
+      margin-top: 4px;
+      display: block;
+    }
+    .chat-bubble.user .chat-time {
+      color: rgba(255, 255, 255, 0.7);
+      text-align: right;
+    }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: none;
+      align-self: flex-start;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      gap: 4px;
+      align-items: center;
+    }
+    .typing-indicator.show {
+      display: flex;
+    }
+    .typing-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--gray-400);
+      border-radius: 50%;
+      animation: typingBlink 1.4s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBlink {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Quick Prompts Chips */
+    .chat-quick-chips {
+      padding: 0.8rem 1.2rem;
+      background: var(--white);
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .quick-chip {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .quick-chip:hover {
+      background: var(--red-pale);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* Chat Input Form */
+    .chat-input-form {
+      padding: 1rem 1.4rem;
+      background: var(--white);
+      border-top: 1.5px solid var(--gray-200);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-input-field {
+      flex: 1;
+      padding: 12px 18px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 50px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input-field:focus {
+      border-color: var(--red);
+    }
+    .chat-send-btn {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .chat-send-btn:hover {
+      background: var(--red-dark);
+      transform: scale(1.05);
+    }
+
+    /* Contact & FAQ Side */
+    .cs-side-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .cs-side-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .contact-channels-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .channel-item:hover {
+      border-color: var(--red);
+      background: #FFFDFC;
+      transform: translateY(-2px);
+    }
+    .channel-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--white);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      border: 1px solid var(--gray-200);
+    }
+    .channel-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--black);
+    }
+    .channel-sub {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+    }
+
+    /* FAQ ACCORDION */
+    .faq-accordion-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    .faq-question-btn {
+      width: 100%;
+      padding: 14px 18px;
+      background: var(--gray-50);
+      border: none;
+      text-align: left;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--black);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .faq-question-btn:hover {
+      background: #F3F4F6;
+    }
+    .faq-answer-body {
+      display: none;
+      padding: 14px 18px;
+      background: var(--white);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--gray-600);
+      border-top: 1px solid var(--gray-200);
+    }
+    .faq-accordion-item.open .faq-answer-body {
+      display: block;
+    }
+    .faq-accordion-item.open .faq-question-btn {
+      color: var(--red);
+      background: var(--red-pale);
+    }
+
+    @media (max-width: 900px) {
+      .cs-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .chat-card-panel {
+        height: 520px;
+      }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="cs-page-wrap">
+      <div class="cs-header-banner">
+        <div class="title-accent" style="margin: 0 auto 1rem;"></div>
+        <h1>Customer Service &amp; Pusat Bantuan</h1>
+        <p>Tim spesialis Gadget.Id siap membantu konsultasi produk, pengecekan pesanan, dan klaim garansi 24 jam nonstop.</p>
+      </div>
+
+      <div class="cs-main-grid">
+        <!-- LEFT: INTERACTIVE LIVE CHAT -->
+        <div>
+          <div class="chat-card-panel">
+            <div class="chat-panel-header">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop" alt="Sarah" class="chat-agent-avatar">
+              <div class="chat-agent-info">
+                <h4>Sarah (Customer Support Specialist)</h4>
+                <div class="chat-agent-status">
+                  <span class="online-indicator-dot"></span> Online · Balasan rata-rata 1 menit
+                </div>
+              </div>
+            </div>
+
+            <!-- CHAT MESSAGES -->
+            <div class="chat-messages-container" id="chatMessages">
+              <div class="chat-bubble-row agent">
+                <div class="chat-bubble agent" id="initialAgentBubble">
+                  Halo! 👋 Selamat datang di Layanan Pelanggan <strong>Gadget.Id</strong>. Saya Sarah, ada yang bisa saya bantu hari ini seputar pembelian gadget, pengiriman, atau klaim garansi resmi?
+                  <span class="chat-time" id="initChatTime">20:45</span>
+                </div>
+              </div>
+
+              <!-- Typing indicator -->
+              <div class="typing-indicator" id="typingIndicator">
+                <span>Sarah sedang mengetik</span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+              </div>
+            </div>
+
+            <!-- QUICK CHIPS -->
+            <div class="chat-quick-chips">
+              <span class="quick-chip" onclick="handleQuickPrompt('Lacak Status Pesanan Saya')">📦 Lacak Pesanan</span>
+              <span class="quick-chip" onclick="handleQuickPrompt('Bagaimana prosedur klaim garansi 1 tahun?')">🛡️ Klaim Garansi</span>
+              <span class="quick-chip" onclick="handleQuickPrompt('Apakah pengiriman gratis ongkir se-Indonesia?')">🚚 Gratis Ongkir</span>
+              <span class="quick-chip" onclick="handleQuickPrompt('Rekomendasi iPhone terbaru saat ini')">📱 Rekomendasi iPhone</span>
+              <span class="quick-chip" onclick="handleQuickPrompt('Apakah bisa bayar COD (Bayar di Tempat)?')">💵 Bayar COD</span>
+            </div>
+
+            <!-- INPUT FORM -->
+            <form class="chat-input-form" onsubmit="handleSendUserMessage(event)">
+              <input type="text" id="chatInputField" class="chat-input-field" placeholder="Ketik pertanyaan Anda di sini..." autocomplete="off">
+              <button type="submit" class="chat-send-btn" title="Kirim Pesan">➤</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- RIGHT: CONTACT CHANNELS & FAQ -->
+        <div>
+          <!-- CONTACT CHANNELS -->
+          <div class="cs-side-card">
+            <div class="cs-side-title">
+              <span>📞</span> Saluran Kontak Langsung
+            </div>
+            <div class="contact-channels-grid">
+              <a href="https://wa.me/6281234567890" target="_blank" class="channel-item">
+                <div class="channel-icon" style="color:#25D366;">💬</div>
+                <div>
+                  <div class="channel-title">WhatsApp Resmi 24 Jam</div>
+                  <div class="channel-sub">+62 812-3456-7890 (Chat Cepat)</div>
+                </div>
+              </a>
+
+              <a href="mailto:support@gadget.id" class="channel-item">
+                <div class="channel-icon" style="color:var(--red);">✉️</div>
+                <div>
+                  <div class="channel-title">Email Dukungan Pelanggan</div>
+                  <div class="channel-sub">support@gadget.id (Respon &lt; 2 Jam)</div>
+                </div>
+              </a>
+
+              <div class="channel-item">
+                <div class="channel-icon" style="color:#3B82F6;">☎️</div>
+                <div>
+                  <div class="channel-title">Hotline Telepon Pusat</div>
+                  <div class="channel-sub">(021) 8062-9999 (Bebas Pulsa)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ ACCORDION -->
+          <div class="cs-side-card" id="faq">
+            <div class="cs-side-title">
+              <span>❓</span> Pertanyaan Sering Diajukan (FAQ)
+            </div>
+
+            <div class="faq-accordion-item open">
+              <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>1. Apakah semua produk original &amp; bergaransi?</span>
+                <span>▾</span>
+              </button>
+              <div class="faq-answer-body">
+                Ya, 100% produk yang dijual di Gadget.Id bergaransi resmi dari distributor resmi (Apple Authorized / Samsung Electronics Indonesia / UGREEN Official) selama 1 tahun penuh. IMEI terdaftar resmi di Kemenperin.
+              </div>
+            </div>
+
+            <div class="faq-accordion-item">
+              <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>2. Berapa lama pengiriman ke alamat saya?</span>
+                <span>▾</span>
+              </button>
+              <div class="faq-answer-body">
+                Untuk area Jabodetabek dan kota besar tersedia pengiriman <strong>GoSend Same Day</strong> (tiba hari yang sama). Untuk pengiriman reguler (J&amp;T, SiCepat, JNE) berkisar antara 1–3 hari kerja dengan proteksi asuransi pengiriman penuh.
+              </div>
+            </div>
+
+            <div class="faq-accordion-item" id="warranty">
+              <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>3. Apa syarat garansi tukar baru 14 hari &amp; servis 1 tahun?</span>
+                <span>▾</span>
+              </button>
+              <div class="faq-answer-body">
+                Garansi tukar baru berlaku jika ditemukan cacat bawaan pabrik dalam waktu 14 hari sejak barang diterima. Cukup sertakan video unboxing, kelengkapan kotak utuh, dan kartu garansi resmi distributor. Servis gratis berlaku 1 tahun penuh di seluruh service center resmi.
+              </div>
+            </div>
+
+            <div class="faq-accordion-item" id="terms">
+              <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>4. Apakah bisa bayar COD (Bayar di Tempat) &amp; apa syaratnya?</span>
+                <span>▾</span>
+              </button>
+              <div class="faq-answer-body">
+                Bisa! Kami melayani sistem COD untuk pembelian smartphone dan aksesoris di wilayah tertentu. Anda cukup membayar uang tunai ke kurir saat paket diterima.
+              </div>
+            </div>
+
+            <div class="faq-accordion-item" id="privacy">
+              <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+                <span>5. Bagaimana perlindungan privasi dan keamanan data saya?</span>
+                <span>▾</span>
+              </button>
+              <div class="faq-answer-body">
+                Privasi Anda adalah prioritas kami. Seluruh data transaksi dienkripsi dengan standar SSL 256-bit dan pembayaran terverifikasi otomatis melalui payment gateway perbankan resmi yang diawasi oleh Bank Indonesia.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('cs');
+    renderNavbar('cs');
+    renderFooter();
+
+    // Set initial chat time & personalized greeting
+    const now = new Date();
+    const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    const timeEl = document.getElementById('initChatTime');
+    if (timeEl) timeEl.textContent = timeStr;
+
+    const user = getCurrentUser();
+    const initBubble = document.getElementById('initialAgentBubble');
+    if (initBubble) {
+      if (user) {
+        initBubble.innerHTML = `Halo Kak <strong>${user.name.split(' ')[0]}</strong>! 👋 Selamat datang di Layanan Pelanggan <strong>Gadget.Id</strong>. Saya Sarah, ada yang bisa saya bantu hari ini seputar pembelian gadget, status pesanan, pengiriman, atau garansi resmi?<span class="chat-time">${timeStr}</span>`;
+      } else {
+        initBubble.innerHTML = `Halo! 👋 Selamat datang di Layanan Pelanggan <strong>Gadget.Id</strong>. Saya Sarah, ada yang bisa saya bantu hari ini seputar rekomendasi produk smartphone, garansi resmi 1 tahun, promo, atau panduan belanja?<span class="chat-time">${timeStr}</span>`;
+      }
+    }
+
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-accordion-item');
+      item.classList.toggle('open');
+    }
+
+    function handleQuickPrompt(text) {
+      document.getElementById('chatInputField').value = text;
+      handleSendUserMessage(new Event('submit'));
+    }
+
+    function handleSendUserMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInputField');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendChatMessage(text, 'user');
+      input.value = '';
+
+      // Trigger bot typing indicator and response
+      const indicator = document.getElementById('typingIndicator');
+      indicator.classList.add('show');
+      scrollChatToBottom();
+
+      setTimeout(() => {
+        indicator.classList.remove('show');
+        const reply = generateBotResponse(text);
+        appendChatMessage(reply, 'agent');
+        scrollChatToBottom();
+      }, 1000);
+    }
+
+    function appendChatMessage(msg, sender) {
+      const container = document.getElementById('chatMessages');
+      const timeStr = new Date().toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+
+      const row = document.createElement('div');
+      row.className = `chat-bubble-row ${sender}`;
+      row.innerHTML = `
+        <div class="chat-bubble ${sender}">
+          ${msg}
+          <span class="chat-time">${timeStr}</span>
+        </div>
+      `;
+
+      // Insert before typing indicator
+      const indicator = document.getElementById('typingIndicator');
+      container.insertBefore(row, indicator);
+      scrollChatToBottom();
+    }
+
+    function scrollChatToBottom() {
+      const container = document.getElementById('chatMessages');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function generateBotResponse(userInput) {
+      const q = userInput.toLowerCase();
+
+      if (q.includes('lacak') || q.includes('pesanan') || q.includes('resi') || q.includes('status')) {
+        const u = getCurrentUser();
+        if (!u) {
+          return `Untuk melacak riwayat pesanan Anda secara otomatis, silakan <a href="login.html" style="color:var(--red);font-weight:700;">Masuk ke Akun Anda</a> terlebih dahulu. Atau sebutkan nomor pesanan Anda (contoh: #GDT-982103) beserta nama penerima agar dapat kami bantu cek.`;
+        }
+        const orders = getOrders();
+        if (orders.length > 0) {
+          const ord = orders[0];
+          return `Baik Kak ${u.name.split(' ')[0]}! Pesanan terbaru Anda dengan nomor <strong>${ord.id}</strong> saat ini berstatus <strong>"${ord.status}"</strong>. Kurir: <strong>${ord.shippingCourier}</strong>. Anda juga dapat memantau detail riwayat lengkap melalui menu <a href="profile.html?tab=orders" style="color:var(--red);font-weight:700;">Riwayat Pesanan di Profil</a>.`;
+        } else {
+          return `Saat ini belum ada riwayat pesanan aktif pada akun Anda. Anda dapat mulai memilih smartphone atau aksesoris pilihan Anda di <a href="home.html" style="color:var(--red);font-weight:700;">Katalog Produk Gadget.Id</a>.`;
+        }
+      }
+
+      if (q.includes('garansi') || q.includes('klaim') || q.includes('rusak') || q.includes('servis')) {
+        return `Seluruh gadget di Gadget.Id dilindungi <strong>Garansi Resmi Distributor 1 Tahun</strong>. Klaim dapat dilakukan di seluruh Authorized Service Center di kota Anda. Khusus 14 hari pertama sejak pembelian, jika terdapat cacat pabrik, kami berikan penggantian unit baru 100% gratis!`;
+      }
+
+      if (q.includes('ongkir') || q.includes('kirim') || q.includes('biaya kirim') || q.includes('gratis')) {
+        return `Kabar baik! Gadget.Id saat ini menyediakan <strong>Promo Bebas Ongkir (Gratis Ongkir)</strong> ke seluruh wilayah Indonesia dengan minimal belanja Rp 500.000 untuk kurir J&T, SiCepat, JNE, maupun GoSend.`;
+      }
+
+      if (q.includes('cod') || q.includes('bayar di tempat')) {
+        return `Ya, kami melayani sistem pembayaran <strong>COD (Cash on Delivery)</strong>! Anda dapat memesan produk melalui website dan membayar tunai langsung kepada kurir saat barang sudah sampai di tangan Anda.`;
+      }
+
+      if (q.includes('iphone') || q.includes('apple')) {
+        return `Untuk produk Apple iPhone, kami memiliki stok lengkap mulai dari <strong>iPhone 15</strong>, <strong>iPhone 16 Pro</strong>, hingga <strong>iPhone 17 Series</strong> dengan garansi resmi. Anda dapat melihat spesifikasi lengkap dan varian warnanya di <a href="home.html?cat=iphone" style="color:var(--red);font-weight:700;">Kategori iPhone</a>.`;
+      }
+
+      if (q.includes('samsung') || q.includes('galaxy')) {
+        return `Untuk lini Samsung, seri flagship <strong>Galaxy S25 Ultra</strong> dan <strong>Galaxy S26 Ultra</strong> dengan prosesor tercepat dan kamera 200MP sudah tersedia ready stock di <a href="home.html?cat=samsung" style="color:var(--red);font-weight:700;">Kategori Samsung</a>.`;
+      }
+
+      if (q.includes('wa') || q.includes('whatsapp') || q.includes('telepon') || q.includes('hubungi')) {
+        return `Anda dapat langsung menghubungi tim customer care kami via WhatsApp di <a href="https://wa.me/6281234567890" target="_blank" style="color:#25D366;font-weight:700;">+62 812-3456-7890</a> atau telepon hotline <strong>(021) 8062-9999</strong>.`;
+      }
+
+      return `Terima kasih atas pertanyaannya! Tim spesialis Gadget.Id siap membantu segala kebutuhan Anda. Apakah Anda ingin dibantu mengenai pengecekan produk, konsultasi promo, atau informasi seputar pesanan Anda? Anda juga bisa menghubungi kami langsung di WhatsApp <strong>+62 812-3456-7890</strong>.`;
+    }
+  </script>
+</body>
+</html>

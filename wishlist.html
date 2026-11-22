@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist Saya (Daftar Favorit) - Gadget.Id</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .wishlist-page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 2.5rem;
+    }
+    .wishlist-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1.5px solid var(--gray-200);
+    }
+    .wishlist-title-box h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 0.3rem;
+    }
+    .wishlist-title-box p {
+      font-size: 0.95rem;
+      color: var(--gray-400);
+    }
+    .wishlist-bulk-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-bulk-cart {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-bulk-cart:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+    }
+    .btn-bulk-clear {
+      background: var(--white);
+      color: var(--gray-600);
+      border: 1.5px solid var(--gray-200);
+      padding: 11px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-bulk-clear:hover {
+      border-color: #EF4444;
+      color: #EF4444;
+      background: #FFF5F5;
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.8rem;
+    }
+    .wishlist-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-200);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.25s;
+    }
+    .wishlist-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    .btn-remove-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--gray-200);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #EF4444;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .btn-remove-wishlist:hover {
+      background: #FFF0F0;
+      border-color: #EF4444;
+      transform: scale(1.1);
+    }
+    .wishlist-card-img {
+      background: var(--gray-100);
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .wishlist-card-img img {
+      max-height: 160px;
+      max-width: 160px;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+    .wishlist-card:hover .wishlist-card-img img {
+      transform: scale(1.06);
+    }
+    .wishlist-card-body {
+      padding: 1.4rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .wishlist-brand {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+    .wishlist-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .wishlist-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-top: auto;
+      margin-bottom: 1.2rem;
+    }
+    .wishlist-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-wish-cart {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-wish-cart:hover {
+      background: var(--red-dark);
+    }
+    .btn-wish-detail {
+      background: var(--gray-100);
+      color: var(--black);
+      border: 1px solid var(--gray-200);
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .btn-wish-detail:hover {
+      background: var(--gray-200);
+    }
+
+    /* EMPTY STATE */
+    .empty-wishlist-box {
+      text-align: center;
+      padding: 5rem 1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .empty-wish-icon {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+    .empty-wishlist-box h3 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+    }
+    .empty-wishlist-box p {
+      color: var(--gray-400);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <div id="navbarContainer"></div>
+
+  <main class="page-main-container">
+    <div class="wishlist-page-container">
+      <div class="wishlist-header-bar">
+        <div class="wishlist-title-box">
+          <h1>❤️ Wishlist Saya</h1>
+          <p id="wishlistSubtitle">Menampilkan produk tersimpan pilihan Anda</p>
+        </div>
+
+        <div class="wishlist-bulk-actions" id="bulkActions" style="display:none;">
+          <button class="btn-bulk-cart" onclick="moveAllWishlistToCart()">
+            🛒 Pindahkan Semua ke Keranjang
+          </button>
+          <button class="btn-bulk-clear" onclick="clearAllWishlist()">
+            🗑 Kosongkan Wishlist
+          </button>
+        </div>
+      </div>
+
+      <!-- WISHLIST GRID OR EMPTY -->
+      <div id="wishlistContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footerContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="shared.js"></script>
+  <script>
+    checkAuthProtection('wishlist');
+    renderNavbar('wishlist');
+    renderFooter();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWishlistPage();
+    });
+
+    function renderWishlistPage() {
+      const listIds = getWishlist();
+      const content = document.getElementById('wishlistContent');
+      const subtitle = document.getElementById('wishlistSubtitle');
+      const bulkActions = document.getElementById('bulkActions');
+
+      if (!listIds.length) {
+        bulkActions.style.display = 'none';
+        subtitle.textContent = 'Wishlist kosong (0 produk)';
+        content.innerHTML = `
+          <div class="empty-wishlist-box">
+            <div class="empty-wish-icon">🤍</div>
+            <h3>Wishlist Anda Masih Kosong</h3>
+            <p>Jelajahi smartphone dan aksesoris terbaik kami, lalu klik ikon hati ❤️ pada produk untuk menyimpannya di sini.</p>
+            <a href="home.html" class="btn-main-cta" style="background:var(--red);color:#fff;display:inline-flex;">
+              Jelajahi Katalog Produk →
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      bulkActions.style.display = 'flex';
+      subtitle.textContent = `Tersimpan ${listIds.length} produk favorit`;
+
+      const savedProducts = products.filter(p => listIds.includes(p.id));
+
+      content.innerHTML = `
+        <div class="wishlist-grid">
+          ${savedProducts.map(p => `
+            <div class="wishlist-card">
+              <button class="btn-remove-wishlist" onclick="handleRemoveFromWishlist(${p.id})" title="Hapus dari Wishlist">
+                ✕
+              </button>
+              <div class="wishlist-card-img" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor:pointer;">
+                <img src="${p.img}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop'">
+              </div>
+              <div class="wishlist-card-body">
+                <div class="wishlist-brand">${p.brand} · ${p.category.toUpperCase()}</div>
+                <div class="wishlist-name">${p.name}</div>
+                <div class="wishlist-price">${formatRp(p.price)}</div>
+                <div class="wishlist-actions-row">
+                  <a href="product-detail.html?id=${p.id}" class="btn-wish-detail">Detail</a>
+                  <button class="btn-wish-cart" onclick="handleMoveToCart(${p.id})">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function handleRemoveFromWishlist(id) {
+      toggleWishlist(id);
+      renderWishlistPage();
+    }
+
+    function handleMoveToCart(id) {
+      addToCart(id);
+    }
+
+    function moveAllWishlistToCart() {
+      const listIds = getWishlist();
+      listIds.forEach(id => {
+        addToCart(id);
+      });
+      showToast('🛒', 'Semua produk favorit berhasil ditambahkan ke keranjang!');
+    }
+
+    function clearAllWishlist() {
+      if (confirm('Apakah Anda yakin ingin mengosongkan seluruh isi wishlist?')) {
+        saveWishlist([]);
+        renderWishlistPage();
+        showToast('🗑', 'Wishlist telah dikosongkan.');
+      }
+    }
+  </script>
+</body>
+</html>
